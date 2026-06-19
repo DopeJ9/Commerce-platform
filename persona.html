@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>用户画像生成器 · Persona Builder · 三方电商 Demo</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  a, a:visited, a:hover, a:active { text-decoration: none; color: inherit; }
+
+  :root {
+    --bg: #0a0d14;
+    --bg-2: #0f1320;
+    --card: #131722;
+    --card-2: #1a1f2e;
+    --line: rgba(255,255,255,.07);
+    --line-2: rgba(255,255,255,.14);
+    --text: #ecedf3;
+    --text-2: #9ba1ad;
+    --text-3: #6b7180;
+    --pp-1: #34d399;
+    --pp-2: #06b6d4;
+    --acc: #c084fc;
+  }
+
+  html, body { background: var(--bg); color: var(--text); min-height: 100%; }
+  body {
+    font-family: -apple-system, "SF Pro Display", "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+    line-height: 1.55; overflow-x: hidden;
+    background:
+      radial-gradient(ellipse 65% 40% at 15% 0%, rgba(52,211,153,.10), transparent 60%),
+      radial-gradient(ellipse 65% 40% at 85% 30%, rgba(6,182,212,.10), transparent 60%),
+      radial-gradient(ellipse 60% 35% at 50% 95%, rgba(192,132,252,.08), transparent 60%),
+      var(--bg);
+    background-attachment: fixed;
+  }
+
+  /* 顶部导航 */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background: rgba(10,13,20,.75);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: 1280px; margin: 0 auto; padding: 14px 28px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .back {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 13px; color: var(--text-2); font-weight: 500;
+    padding: 7px 14px; border-radius: 999px;
+    border: 1px solid var(--line); transition: .2s;
+  }
+  .back:hover { color: var(--text); border-color: var(--line-2); background: rgba(255,255,255,.04); }
+  .nav-title {
+    display: flex; align-items: center; gap: 10px; font-weight: 700;
+  }
+  .nav-title .ic {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--pp-1), var(--pp-2));
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 14px; box-shadow: 0 6px 18px -6px rgba(52,211,153,.5);
+  }
+  .nav-title .name {
+    background: linear-gradient(120deg,#fff 0%,#c5c8d2 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    font-size: 14px; letter-spacing: .5px;
+  }
+  .nav-spacer { flex: 1; }
+  .badge-tip {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; padding: 5px 10px; border-radius: 999px;
+    background: rgba(52,211,153,.10); color: #6ee7b7; font-weight: 600;
+    border: 1px solid rgba(52,211,153,.22);
+  }
+  .badge-tip::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: #34d399; box-shadow: 0 0 8px #34d399;
+  }
+
+  /* HERO */
+  .hero {
+    max-width: 1280px; margin: 0 auto;
+    padding: 60px 28px 30px; text-align: center;
+  }
+  .hero .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11px; padding: 5px 12px; border-radius: 999px;
+    background: rgba(255,255,255,.04); border: 1px solid var(--line);
+    color: var(--text-2); margin-bottom: 22px; letter-spacing: 2px;
+  }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--pp-1); box-shadow: 0 0 8px var(--pp-1); }
+  .hero h1 {
+    font-size: clamp(34px, 4.6vw, 54px); font-weight: 800;
+    line-height: 1.1; letter-spacing: -1px; margin-bottom: 16px;
+  }
+  .hero h1 .grad {
+    background: linear-gradient(120deg, var(--pp-1) 0%, var(--pp-2) 50%, var(--acc) 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero p.lead { max-width: 600px; margin: 0 auto; font-size: 15px; color: var(--text-2); line-height: 1.7; }
+
+  /* 主体 grid */
+  .builder {
+    max-width: 1280px; margin: 0 auto;
+    padding: 24px 28px 60px;
+    display: grid; grid-template-columns: 1.05fr .95fr;
+    gap: 24px; align-items: start;
+  }
+  @media (max-width: 980px) { .builder { grid-template-columns: 1fr; } }
+
+  .panel {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 20px; padding: 26px 26px 24px;
+  }
+  .panel + .panel { margin-top: 18px; }
+
+  .panel-h {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 18px;
+  }
+  .step-num {
+    width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, var(--pp-1), var(--pp-2));
+    color: #001a13; font-weight: 800; font-size: 13px;
+    box-shadow: 0 6px 16px -6px rgba(52,211,153,.5);
+  }
+  .panel-h .ttl { font-size: 16px; font-weight: 800; letter-spacing: -.2px; }
+  .panel-h .ttl small { color: var(--text-3); font-weight: 500; font-size: 12px; margin-left: 6px; letter-spacing: 0; }
+
+  /* chip 选择器 */
+  .group { margin-bottom: 18px; }
+  .group:last-child { margin-bottom: 0; }
+  .group-label {
+    font-size: 12px; color: var(--text-3); font-weight: 600;
+    letter-spacing: 1.5px; margin-bottom: 8px; text-transform: uppercase;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip {
+    font-size: 13px; padding: 7px 14px; border-radius: 999px;
+    background: rgba(255,255,255,.03); border: 1px solid var(--line);
+    color: var(--text-2); cursor: pointer; transition: .15s; user-select: none;
+    font-weight: 500;
+  }
+  .chip:hover { color: var(--text); border-color: var(--line-2); background: rgba(255,255,255,.06); }
+  .chip.on {
+    color: #001a13; font-weight: 700;
+    background: linear-gradient(135deg, var(--pp-1), var(--pp-2));
+    border-color: transparent;
+    box-shadow: 0 6px 16px -6px rgba(52,211,153,.6);
+  }
+  .chip-input {
+    background: transparent; border: 1px dashed var(--line-2);
+    color: var(--text-2); font-family: inherit; font-size: 13px;
+    padding: 7px 14px; border-radius: 999px; outline: none;
+    min-width: 130px; transition: .15s;
+  }
+  .chip-input:focus { color: var(--text); border-color: var(--pp-1); border-style: solid; }
+  .chip-input::placeholder { color: var(--text-3); }
+
+  /* 操作按钮区 */
+  .actions {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 13px; font-weight: 700; letter-spacing: .5px;
+    padding: 11px 18px; border-radius: 12px;
+    cursor: pointer; transition: .2s; border: none; font-family: inherit;
+  }
+  .btn:disabled { opacity: .35; cursor: not-allowed; }
+  .btn.btn-primary {
+    background: linear-gradient(135deg, var(--pp-1), var(--pp-2));
+    color: #001a13;
+    box-shadow: 0 10px 26px -8px rgba(52,211,153,.5);
+  }
+  .btn.btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 14px 30px -8px rgba(52,211,153,.65); }
+  .btn.btn-ghost {
+    background: rgba(255,255,255,.05); color: var(--text-2);
+    border: 1px solid var(--line);
+  }
+  .btn.btn-ghost:hover { color: var(--text); border-color: var(--line-2); background: rgba(255,255,255,.08); }
+
+  /* 右侧 · 画像预览卡 */
+  .preview-wrap { position: sticky; top: 88px; }
+  .preview {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 20px; overflow: hidden;
+  }
+  .pv-head {
+    position: relative; padding: 22px 24px;
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(135deg, rgba(52,211,153,.10), rgba(6,182,212,.10));
+  }
+  .pv-head .lbl { font-size: 11px; color: var(--pp-1); letter-spacing: 2px; font-weight: 700; }
+  .pv-head .pv-name { font-size: 20px; font-weight: 800; margin-top: 6px; letter-spacing: -.3px; }
+  .pv-head .pv-tag-line { color: var(--text-2); font-size: 13px; margin-top: 6px; }
+  .pv-head .empty { color: var(--text-3); font-size: 13px; padding: 6px 0; }
+
+  .pv-body { padding: 22px 24px; }
+  .pv-section { margin-bottom: 18px; }
+  .pv-section:last-child { margin-bottom: 0; }
+  .pv-section h4 {
+    font-size: 11px; color: var(--text-3); letter-spacing: 2px;
+    margin-bottom: 8px; font-weight: 700; text-transform: uppercase;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .pv-section h4 .ic { font-size: 13px; }
+  .pv-section .desc { color: var(--text); font-size: 14px; line-height: 1.7; }
+  .pv-section .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pv-section .tags .t {
+    font-size: 12px; padding: 4px 10px; border-radius: 6px;
+    background: rgba(255,255,255,.04); color: var(--text);
+    border: 1px solid var(--line);
+  }
+  .pv-section .tags .t.acc {
+    color: var(--pp-1); border-color: rgba(52,211,153,.3);
+    background: rgba(52,211,153,.08);
+  }
+  .pv-section ul { list-style: none; padding: 0; }
+  .pv-section ul li {
+    font-size: 13px; color: var(--text); line-height: 1.7;
+    padding-left: 18px; position: relative; margin-bottom: 5px;
+  }
+  .pv-section ul li::before {
+    content: ""; position: absolute; left: 0; top: 10px;
+    width: 8px; height: 2px; background: var(--pp-1); border-radius: 2px;
+  }
+  .pv-mall-rec {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .pv-mall-rec .m {
+    flex: 1; min-width: 120px;
+    padding: 12px 14px; border-radius: 12px;
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,.02);
+    transition: .2s;
+  }
+  .pv-mall-rec .m.primary {
+    border-color: rgba(52,211,153,.4);
+    background: linear-gradient(135deg, rgba(52,211,153,.08), rgba(6,182,212,.05));
+  }
+  .pv-mall-rec .m .name { font-size: 13px; font-weight: 700; color: var(--text); }
+  .pv-mall-rec .m .reason { font-size: 11px; color: var(--text-3); margin-top: 3px; line-height: 1.5; }
+  .pv-mall-rec .m.primary .name { color: var(--pp-1); }
+
+  .pv-sample {
+    background: rgba(255,255,255,.03); border-radius: 12px;
+    padding: 14px 16px; border: 1px solid var(--line);
+    font-size: 13px; color: var(--text); line-height: 1.7;
+    font-style: italic; position: relative;
+  }
+  .pv-sample::before {
+    content: """;
+    position: absolute; left: 8px; top: 4px;
+    font-size: 30px; color: var(--pp-1); opacity: .35;
+    font-family: Georgia, serif; line-height: 1;
+  }
+  .pv-sample-content { padding-left: 22px; }
+
+  /* 历史画像 */
+  .history {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 20px; padding: 22px 24px;
+    margin-top: 18px;
+  }
+  .history-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .history-head .ttl { font-size: 14px; font-weight: 700; }
+  .history-head .ttl small { color: var(--text-3); font-weight: 500; margin-left: 5px; font-size: 12px; }
+  .clear-btn {
+    font-size: 11px; color: var(--text-3); background: none; border: none;
+    cursor: pointer; padding: 4px 8px; border-radius: 6px;
+  }
+  .clear-btn:hover { color: #fb7185; background: rgba(251,113,133,.1); }
+  .hist-list { display: flex; flex-direction: column; gap: 8px; max-height: 280px; overflow-y: auto; }
+  .hist-empty { color: var(--text-3); font-size: 12px; text-align: center; padding: 16px 0; }
+  .hist-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 14px; border-radius: 12px;
+    background: rgba(255,255,255,.025); border: 1px solid var(--line);
+    cursor: pointer; transition: .15s;
+  }
+  .hist-item:hover { border-color: rgba(52,211,153,.3); background: rgba(52,211,153,.05); }
+  .hist-item .h-ic {
+    width: 32px; height: 32px; border-radius: 9px; flex-shrink: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,.05); font-size: 16px;
+  }
+  .hist-item .h-info { flex: 1; min-width: 0; }
+  .hist-item .h-name { font-size: 13px; font-weight: 700; color: var(--text); }
+  .hist-item .h-name b { color: var(--pp-1); }
+  .hist-item .h-meta { font-size: 11px; color: var(--text-3); margin-top: 2px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .hist-item .h-del {
+    color: var(--text-3); font-size: 16px; padding: 4px 8px;
+    border-radius: 6px; cursor: pointer; transition: .15s;
+  }
+  .hist-item .h-del:hover { color: #fb7185; background: rgba(251,113,133,.12); }
+
+  /* JSON 弹窗 */
+  .json-mask {
+    position: fixed; inset: 0; background: rgba(5,7,12,.78);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    display: none; align-items: center; justify-content: center;
+    padding: 20px; z-index: 100;
+  }
+  .json-mask.show { display: flex; }
+  .json-modal {
+    background: var(--card); border: 1px solid var(--line-2);
+    border-radius: 18px; width: 100%; max-width: 720px;
+    max-height: 86vh; display: flex; flex-direction: column; overflow: hidden;
+  }
+  .json-head {
+    padding: 18px 22px; border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .json-head .t { font-size: 15px; font-weight: 700; }
+  .json-head .t small { color: var(--text-3); font-weight: 500; margin-left: 6px; font-size: 12px; }
+  .json-close { background: none; border: none; color: var(--text-2); font-size: 22px; cursor: pointer; padding: 4px 10px; border-radius: 6px; }
+  .json-close:hover { color: var(--text); background: rgba(255,255,255,.05); }
+  .json-body {
+    padding: 18px 22px; overflow: auto; flex: 1;
+    background: var(--bg-2);
+  }
+  pre.code {
+    font-family: 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 12.5px; line-height: 1.7; color: var(--text);
+    white-space: pre-wrap; word-break: break-all;
+  }
+  .json-foot {
+    padding: 14px 22px; border-top: 1px solid var(--line);
+    display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;
+  }
+
+  /* 完成度进度条 */
+  .progress {
+    display: flex; align-items: center; gap: 12px;
+    margin: 14px 0 22px;
+  }
+  .progress .bar {
+    flex: 1; height: 6px; border-radius: 999px;
+    background: rgba(255,255,255,.06); overflow: hidden;
+  }
+  .progress .bar > i {
+    display: block; height: 100%; border-radius: 999px;
+    background: linear-gradient(90deg, var(--pp-1), var(--pp-2), var(--acc));
+    transition: width .35s ease;
+  }
+  .progress .pct { font-size: 12px; color: var(--text-2); font-weight: 700; min-width: 56px; text-align: right; }
+
+  /* Toast */
+  .toast {
+    position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-12px);
+    background: rgba(20,25,35,.95); color: var(--text);
+    padding: 11px 22px; border-radius: 999px; font-size: 13px;
+    z-index: 200; opacity: 0; pointer-events: none;
+    transition: .25s; border: 1px solid var(--line-2);
+    box-shadow: 0 16px 30px -10px rgba(0,0,0,.5);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="back" href="index.html">⬅ 商城广场</a>
+    <div class="nav-title">
+      <span class="ic">🧬</span>
+      <span class="name">用户画像生成器 · PERSONA BUILDER</span>
+    </div>
+    <div class="nav-spacer"></div>
+    <span class="badge-tip">智能补全 · 本地保存</span>
+  </div>
+</nav>
+
+<section class="hero">
+  <span class="eyebrow"><span class="dot"></span>SMART PERSONA · POWERED BY RULE ENGINE</span>
+  <h1>给我几个标签<br/>我帮你写一个 <span class="grad">细腻的用户画像</span></h1>
+  <p class="lead">点几下 chip 选择 · 系统自动衍生出消费习惯、痛点、决策因素、推荐商城、示例提问 —— 一键复制 JSON，直接拿去出题。</p>
+</section>
+
+<div class="builder">
+  <!-- 左侧：选择面板 -->
+  <div>
+    <!-- Step 1: 基础信息 -->
+    <div class="panel">
+      <div class="panel-h">
+        <span class="step-num">1</span>
+        <span class="ttl">基础信息<small>性别 · 年龄 · 城市 · 收入</small></span>
+      </div>
+
+      <div class="group">
+        <div class="group-label">性别</div>
+        <div class="chips" data-key="gender" data-mode="single">
+          <span class="chip" data-v="male">👨 男</span>
+          <span class="chip" data-v="female">👩 女</span>
+          <span class="chip" data-v="any">🌈 不限</span>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">年龄段</div>
+        <div class="chips" data-key="age" data-mode="single">
+          <span class="chip" data-v="18-24">18-24 大学/初入</span>
+          <span class="chip" data-v="25-30">25-30 早职场</span>
+          <span class="chip" data-v="30-40">30-40 资深</span>
+          <span class="chip" data-v="40-50">40-50 中坚</span>
+          <span class="chip" data-v="50+">50+ 退休前</span>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">所在城市</div>
+        <div class="chips" data-key="city" data-mode="single">
+          <span class="chip" data-v="tier-1">一线 北/上/广/深</span>
+          <span class="chip" data-v="new-tier-1">新一线 杭/成/苏</span>
+          <span class="chip" data-v="tier-2">二线省会</span>
+          <span class="chip" data-v="tier-3">三四线小城</span>
+          <span class="chip" data-v="overseas">海外</span>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">月可支配收入</div>
+        <div class="chips" data-key="income" data-mode="single">
+          <span class="chip" data-v="low">≤ 5K</span>
+          <span class="chip" data-v="mid-low">5K-10K</span>
+          <span class="chip" data-v="mid">10K-20K</span>
+          <span class="chip" data-v="mid-high">20K-50K</span>
+          <span class="chip" data-v="high">50K+</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: 职业与身份 -->
+    <div class="panel">
+      <div class="panel-h">
+        <span class="step-num">2</span>
+        <span class="ttl">职业 / 身份<small>影响购买类目和决策因素</small></span>
+      </div>
+
+      <div class="group">
+        <div class="group-label">职业角色（可多选）</div>
+        <div class="chips" data-key="role" data-mode="multi">
+          <span class="chip" data-v="programmer">💻 程序员</span>
+          <span class="chip" data-v="designer">🎨 设计师</span>
+          <span class="chip" data-v="operation">📊 运营/产品</span>
+          <span class="chip" data-v="finance">💼 金融/咨询</span>
+          <span class="chip" data-v="teacher">📚 教师/学者</span>
+          <span class="chip" data-v="doctor">🩺 医护</span>
+          <span class="chip" data-v="freelancer">✏️ 自由职业</span>
+          <span class="chip" data-v="student">🎓 学生</span>
+          <span class="chip" data-v="mom">🤱 全职妈妈</span>
+          <span class="chip" data-v="executive">🏢 管理层</span>
+          <span class="chip" data-v="retired">🌳 退休</span>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">家庭状态</div>
+        <div class="chips" data-key="family" data-mode="single">
+          <span class="chip" data-v="single">🧍 单身</span>
+          <span class="chip" data-v="couple">💑 二人世界</span>
+          <span class="chip" data-v="kid-young">👨‍👩‍👧 有学龄前孩子</span>
+          <span class="chip" data-v="kid-old">👨‍👩‍👧‍👦 有大孩子</span>
+          <span class="chip" data-v="parents">👵 与父母同住</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: 兴趣偏好 -->
+    <div class="panel">
+      <div class="panel-h">
+        <span class="step-num">3</span>
+        <span class="ttl">兴趣偏好<small>会购物的品类</small></span>
+      </div>
+
+      <div class="group">
+        <div class="group-label">兴趣类目（多选）</div>
+        <div class="chips" data-key="interests" data-mode="multi">
+          <span class="chip" data-v="tech">📱 数码科技</span>
+          <span class="chip" data-v="fashion">👗 时尚穿搭</span>
+          <span class="chip" data-v="beauty">💄 美妆护肤</span>
+          <span class="chip" data-v="sport">🏃 运动健身</span>
+          <span class="chip" data-v="outdoor">🏕️ 户外露营</span>
+          <span class="chip" data-v="food">🍽️ 美食饮品</span>
+          <span class="chip" data-v="home">🏠 家居生活</span>
+          <span class="chip" data-v="baby">👶 母婴亲子</span>
+          <span class="chip" data-v="pet">🐱 宠物</span>
+          <span class="chip" data-v="reading">📖 阅读学习</span>
+          <span class="chip" data-v="travel">✈️ 旅行</span>
+          <span class="chip" data-v="game">🎮 游戏</span>
+          <span class="chip" data-v="art">🎭 艺术文创</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4: 消费风格 -->
+    <div class="panel">
+      <div class="panel-h">
+        <span class="step-num">4</span>
+        <span class="ttl">消费风格<small>决定推荐哪家商城</small></span>
+      </div>
+
+      <div class="group">
+        <div class="group-label">消费风格（单选）</div>
+        <div class="chips" data-key="style" data-mode="single">
+          <span class="chip" data-v="value">🧮 性价比党 · 比价狂魔</span>
+          <span class="chip" data-v="quality">💎 品质党 · 品牌正品</span>
+          <span class="chip" data-v="impulse">⚡ 冲动派 · 看到就买</span>
+          <span class="chip" data-v="balanced">⚖️ 均衡派 · 综合考虑</span>
+          <span class="chip" data-v="trend">🔥 潮流党 · 网红同款</span>
+          <span class="chip" data-v="hoarder">📦 囤货党 · 一次买够</span>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">购物决策因素（多选）</div>
+        <div class="chips" data-key="factors" data-mode="multi">
+          <span class="chip" data-v="price">💰 价格</span>
+          <span class="chip" data-v="brand">🏷️ 品牌</span>
+          <span class="chip" data-v="review">⭐ 用户评价</span>
+          <span class="chip" data-v="warranty">🛡️ 售后保障</span>
+          <span class="chip" data-v="shipping">🚚 配送速度</span>
+          <span class="chip" data-v="appearance">🎨 颜值外观</span>
+          <span class="chip" data-v="parameters">🔬 参数性能</span>
+          <span class="chip" data-v="sustainable">🌿 环保理念</span>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-label">补充关键词（自定义,回车添加）</div>
+        <div class="chips" id="customChips" data-key="customs" data-mode="multi"></div>
+        <div style="margin-top: 8px;">
+          <input class="chip-input" id="customInput" placeholder="例如:近视/喜欢极简风/有过敏…" />
+        </div>
+      </div>
+    </div>
+
+    <!-- 进度 + 操作 -->
+    <div class="panel" style="background: linear-gradient(135deg, rgba(52,211,153,.06), rgba(6,182,212,.04)); border-color: rgba(52,211,153,.2);">
+      <div class="panel-h" style="margin-bottom: 8px;">
+        <span class="step-num">✨</span>
+        <span class="ttl">智能补全 & 保存<small>右侧画像会实时变化</small></span>
+      </div>
+
+      <div class="progress">
+        <div class="bar"><i id="progressBar" style="width:0%"></i></div>
+        <span class="pct" id="progressPct">0%</span>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-primary" id="enrichBtn">🪄 智能补全</button>
+        <button class="btn btn-ghost" id="saveBtn">💾 保存画像</button>
+        <button class="btn btn-ghost" id="exportBtn">📋 复制 JSON</button>
+        <button class="btn btn-ghost" id="resetBtn">↺ 重新开始</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 右侧：实时预览 -->
+  <div class="preview-wrap">
+    <div class="preview" id="preview">
+      <div class="pv-head">
+        <div class="lbl">USER PERSONA · 实时预览</div>
+        <div class="pv-name" id="pvName">尚未生成画像</div>
+        <div class="empty" id="pvHead">先在左侧选几个标签，画像会自动生成 →</div>
+        <div class="pv-tag-line" id="pvTagLine" style="display:none"></div>
+      </div>
+      <div class="pv-body" id="pvBody"></div>
+    </div>
+
+    <div class="history">
+      <div class="history-head">
+        <span class="ttl">📚 已保存画像<small id="histCount">(0)</small></span>
+        <button class="clear-btn" id="clearHist">清空全部</button>
+      </div>
+      <div class="hist-list" id="histList">
+        <div class="hist-empty">暂无保存的画像 · 点 💾 保存当前画像</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JSON 导出弹窗 -->
+<div class="json-mask" id="jsonMask">
+  <div class="json-modal">
+    <div class="json-head">
+      <div class="t">画像 JSON<small>可直接拿去出题 / 喂给大模型</small></div>
+      <button class="json-close" id="jsonClose">×</button>
+    </div>
+    <div class="json-body"><pre class="code" id="jsonCode"></pre></div>
+    <div class="json-foot">
+      <button class="btn btn-ghost" id="copyJson">📋 复制到剪贴板</button>
+      <button class="btn btn-primary" id="downloadJson">⬇ 下载 .json</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const DICT = {
+  gender: {
+    male:   { label: "男", pron: "他", traits: ["决策偏快", "看重参数"] },
+    female: { label: "女", pron: "她", traits: ["看重体验", "看好评和口碑"] },
+    any:    { label: "中性", pron: "ta", traits: ["关注实用与多元"] },
+  },
+  age: {
+    "18-24": { label: "18-24 岁", stage: "大学生 / 初入职场", priorities: ["颜值","性价比","流行"], pace: "新手 · 学着购物" },
+    "25-30": { label: "25-30 岁", stage: "刚立足职场",       priorities: ["性价比","品质","效率"], pace: "理性消费起步" },
+    "30-40": { label: "30-40 岁", stage: "事业 / 家庭并行",   priorities: ["品质","保障","时间效率"], pace: "成熟决策" },
+    "40-50": { label: "40-50 岁", stage: "中坚力量",         priorities: ["品质","信赖品牌","健康"], pace: "稳健慎重" },
+    "50+":   { label: "50+ 岁",   stage: "退休前 / 长辈",    priorities: ["实用","健康","保障"], pace: "保守稳妥" },
+  },
+  city: {
+    "tier-1":      { label: "一线城市", note: "节奏快 · 时间贵 · 品牌敏感" },
+    "new-tier-1":  { label: "新一线",  note: "消费力强 · 关注新品类" },
+    "tier-2":      { label: "二线",    note: "讲究性价比 · 也愿为品牌买单" },
+    "tier-3":      { label: "三四线",  note: "价格敏感 · 看重熟人推荐" },
+    "overseas":    { label: "海外",    note: "跨境购物 · 关注海外直邮" },
+  },
+  income: {
+    low:      { label: "≤5K", budget: "克制",  premium: false },
+    "mid-low":{ label: "5-10K", budget: "适中", premium: false },
+    mid:      { label: "10-20K", budget: "宽裕", premium: true  },
+    "mid-high":{ label: "20-50K", budget: "充足", premium: true },
+    high:     { label: "50K+", budget: "丰厚", premium: true  },
+  },
+  role: {
+    programmer: { name: "程序员",     buys: ["机械键盘","显示器","降噪耳机","笔记本电脑","人体工学椅"], pains: ["颈椎酸痛","视力疲劳","加班"] },
+    designer:   { name: "设计师",     buys: ["数位板","高色域显示器","设计软件","马克笔","文创小物"], pains: ["腰肌劳损","审美疲劳","截稿压力"] },
+    operation:  { name: "运营/产品",  buys: ["平板","商务装","便携咖啡机","效率工具书"], pains: ["时间被切碎","会议太多"] },
+    finance:    { name: "金融/咨询",  buys: ["商务西装","真皮包","钢笔","进口红酒"], pains: ["出差频繁","应酬多"] },
+    teacher:    { name: "教师/学者",  buys: ["书籍","笔记本","保温杯","护眼台灯"], pains: ["颈椎病","用嗓过度"] },
+    doctor:     { name: "医护",       buys: ["护肤霜","好穿的运动鞋","泡脚桶","按摩仪"], pains: ["久站腿肿","作息紊乱"] },
+    freelancer: { name: "自由职业",   buys: ["便携笔记本","咖啡豆","居家美学小物","健身器材"], pains: ["收入不稳","自律压力"] },
+    student:    { name: "学生",       buys: ["性价比球鞋","平价彩妆","零食","文具","小家电"], pains: ["预算紧张","宿舍空间小"] },
+    mom:        { name: "全职妈妈",   buys: ["奶粉","母婴用品","家电","囤货零食","儿童玩具"], pains: ["睡眠不足","时间不属于自己"] },
+    executive:  { name: "管理层",     buys: ["商务皮鞋","名牌包","进口酒","高端家居","健身私教"], pains: ["应酬胃","压力大"] },
+    retired:    { name: "退休",       buys: ["按摩椅","钓鱼装备","保健品","旅游用品","茶具"], pains: ["关节炎","三高","怕被骗"] },
+  },
+  family: {
+    single:     { label: "单身",        note: "购物完全为自己" },
+    couple:     { label: "二人世界",    note: "为另一半也买单" },
+    "kid-young":{ label: "学龄前孩子",  note: "母婴 / 教育产品高频" },
+    "kid-old":  { label: "大孩子",     note: "教育 / 学习用品 / 户外运动" },
+    parents:    { label: "与父母同住",  note: "为长辈购买保健 / 家电" },
+  },
+  interests: {
+    tech:    { name: "数码科技", products: ["手机","耳机","键盘","显示器","智能手表"] },
+    fashion: { name: "时尚穿搭", products: ["大衣","连衣裙","球鞋","配饰","包"] },
+    beauty:  { name: "美妆护肤", products: ["精华","面霜","口红","面膜","防晒"] },
+    sport:   { name: "运动健身", products: ["跑鞋","瑜伽垫","健身服","蛋白粉","运动手表"] },
+    outdoor: { name: "户外露营", products: ["冲锋衣","帐篷","登山包","保温杯","折叠椅"] },
+    food:    { name: "美食饮品", products: ["精品咖啡","进口红酒","和牛","水果礼盒","调味料"] },
+    home:    { name: "家居生活", products: ["床品四件套","香薰","收纳","厨房好物","小家电"] },
+    baby:    { name: "母婴亲子", products: ["奶粉","婴儿车","益智玩具","童装","绘本"] },
+    pet:     { name: "宠物",     products: ["猫粮","狗粮","逗猫棒","猫砂","宠物自动喂食器"] },
+    reading: { name: "阅读学习", products: ["纸质书","kindle","笔记本","钢笔","学习软件"] },
+    travel:  { name: "旅行",     products: ["行李箱","转换插头","压缩包","旅行护肤套","眼罩"] },
+    game:    { name: "游戏",     products: ["游戏主机","手柄","机械键盘","耳机","显卡"] },
+    art:     { name: "艺术文创", products: ["画材","设计书","文创周边","限定海报","乐器"] },
+  },
+  style: {
+    value:    { label: "性价比党",   mall: "shangou",  reason: "9 折破价 · 满 99 减 15 凑单划算",   compare: "比价习惯极深" },
+    quality:  { label: "品质党",     mall: "haixiang", reason: "PLUS 95 折 · 假一赔十万",          compare: "看品牌大于看价格" },
+    impulse:  { label: "冲动派",     mall: "shangou",  reason: "限时秒杀 · 看到就买刺激感",         compare: "决策快 不犹豫" },
+    balanced: { label: "均衡派",     mall: "yuegou",   reason: "综合大牌 · 满 99 包邮 · 7 天无理由", compare: "理性比较 选最稳" },
+    trend:    { label: "潮流党",     mall: "shangou",  reason: "网红爆款 · 主播同款 · ins 风",      compare: "更看重风格匹配" },
+    hoarder:  { label: "囤货党",     mall: "haixiang", reason: "满 1500 减 200 · 一次屯够",        compare: "习惯一次大单" },
+  },
+  factors: {
+    price:       { label: "价格" },
+    brand:       { label: "品牌" },
+    review:      { label: "用户评价" },
+    warranty:    { label: "售后保障" },
+    shipping:    { label: "配送速度" },
+    appearance:  { label: "颜值外观" },
+    parameters:  { label: "参数性能" },
+    sustainable: { label: "环保理念" },
+  },
+};
+
+const MALLS = {
+  yuegou:   { name: "悦购商城", emoji: "🛍️", url: "malls/yuegou.html",   why: "综合大牌 · 满 99 包邮 · 7 天无理由 · 性价比稳妥之选" },
+  haixiang: { name: "海象优选", emoji: "🌊", url: "malls/haixiang.html", why: "PLUS 95 折 · 15+30 天保障 · 假一赔十万 · 适合品质党" },
+  shangou:  { name: "闪购天地", emoji: "⚡", url: "malls/shangou.html",  why: "9 折秒杀 · 满 69 包邮 · 适合追求最低价、潮流爆款" },
+};
+</script>
+<script>
+/* ====== State ====== */
+const state = {
+  gender: null, age: null, city: null, income: null,
+  family: null, style: null,
+  role: [], interests: [], factors: [], customs: [],
+  enriched: false,
+};
+let history = JSON.parse(localStorage.getItem("persona_history") || "[]");
+
+/* ====== Helpers ====== */
+function $(id) { return document.getElementById(id); }
+function $$(sel) { return document.querySelectorAll(sel); }
+function showToast(msg) {
+  const t = $("toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(showToast._t); showToast._t = setTimeout(() => t.classList.remove("show"), 1800);
+}
+
+/* ====== Chip 选择 ====== */
+$$(".chips").forEach(group => {
+  if (group.id === "customChips") return;
+  const key = group.dataset.key;
+  const mode = group.dataset.mode;
+  group.addEventListener("click", e => {
+    const chip = e.target.closest(".chip");
+    if (!chip) return;
+    const v = chip.dataset.v;
+    if (mode === "single") {
+      group.querySelectorAll(".chip").forEach(c => c.classList.remove("on"));
+      if (state[key] === v) {
+        state[key] = null;
+      } else {
+        chip.classList.add("on");
+        state[key] = v;
+      }
+    } else {
+      const arr = state[key];
+      const idx = arr.indexOf(v);
+      if (idx >= 0) { arr.splice(idx, 1); chip.classList.remove("on"); }
+      else { arr.push(v); chip.classList.add("on"); }
+    }
+    state.enriched = false;
+    renderPreview();
+  });
+});
+
+/* ====== 自定义 chip ====== */
+const customInput = $("customInput");
+customInput.addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    const v = customInput.value.trim();
+    if (!v) return;
+    if (state.customs.includes(v)) { customInput.value = ""; return; }
+    state.customs.push(v);
+    customInput.value = "";
+    renderCustoms();
+    renderPreview();
+  }
+});
+function renderCustoms() {
+  const c = $("customChips");
+  c.innerHTML = state.customs.map((v, i) =>
+    "<span class=\"chip on\" onclick=\"removeCustom(" + i + ")\">" + escapeHtml(v) + " ×</span>"
+  ).join("");
+}
+window.removeCustom = function(i) {
+  state.customs.splice(i, 1);
+  renderCustoms();
+  renderPreview();
+};
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
+}
+
+/* ====== 智能补全（规则引擎） ====== */
+function buildPersona() {
+  const g = state.gender ? DICT.gender[state.gender] : null;
+  const a = state.age    ? DICT.age[state.age] : null;
+  const c = state.city   ? DICT.city[state.city] : null;
+  const inc = state.income ? DICT.income[state.income] : null;
+  const fam = state.family ? DICT.family[state.family] : null;
+  const st = state.style ? DICT.style[state.style] : null;
+  const roles = state.role.map(r => DICT.role[r]).filter(Boolean);
+  const interests = state.interests.map(r => DICT.interests[r]).filter(Boolean);
+  const factors = state.factors.map(r => DICT.factors[r]).filter(Boolean);
+
+  const items = [g, a, c, inc, fam, st].filter(Boolean).length
+              + roles.length + interests.length + factors.length + state.customs.length;
+  const filled = items > 0;
+
+  /* ===== 一句话画像 ===== */
+  const tagBits = [];
+  if (a) tagBits.push(a.label);
+  if (g) tagBits.push(g.label);
+  if (c) tagBits.push(c.label);
+  if (roles.length) tagBits.push(roles.map(r => r.name).join("/"));
+  if (st) tagBits.push(st.label);
+  const tagLine = tagBits.join(" · ");
+
+  /* ===== 昵称（有趣的命名）===== */
+  const namePool = [];
+  if (st && roles.length) namePool.push(st.label.replace(/(党|派)$/,"") + roles[0].name);
+  if (st) namePool.push(st.label);
+  if (roles.length) namePool.push(a ? (a.label.match(/\d+/)[0] + "岁" + roles[0].name) : roles[0].name);
+  if (interests.length && a) namePool.push(a.label.match(/\d+/)[0] + "岁的" + interests[0].name + "爱好者");
+  const nickname = namePool[0] || "尚未命名画像";
+
+  /* ===== 描述段落 ===== */
+  let desc = "";
+  if (filled) {
+    const pron = g ? g.pron : "ta";
+    const parts = [];
+    parts.push("一位" + (a ? a.label + "的" : "") + (c ? c.label : "") + (g ? g.label : "用户"));
+    if (roles.length) parts.push("职业是 " + roles.map(r => r.name).join(" / "));
+    if (fam) parts.push("家庭状态:" + fam.label + "(" + fam.note + ")");
+    if (inc) parts.push("月可支配 " + inc.label);
+    if (st) parts.push("典型 " + st.label + ":" + st.compare);
+    desc = parts.join("，") + "。";
+
+    if (interests.length) {
+      desc += pron + "经常逛 " + interests.map(i => i.name).join(" / ") + " 类目，";
+    }
+    if (factors.length) {
+      desc += "下单时最在意 " + factors.map(f => f.label).join("、") + "。";
+    }
+    if (state.customs.length) {
+      desc += " 个人特征:" + state.customs.join(" / ") + "。";
+    }
+  }
+
+  /* ===== 痛点 / 决策因素 ===== */
+  const pains = new Set();
+  roles.forEach(r => r.pains.forEach(p => pains.add(p)));
+  if (a && a.label.includes("18-24")) pains.add("预算有限,易被价格打动");
+  if (a && a.label.includes("50+")) pains.add("怕踩坑,需信赖背书");
+  if (c && c.label === "海外") pains.add("跨境物流时效");
+  state.customs.forEach(c2 => pains.add(c2));
+
+  /* ===== 推荐商品 ===== */
+  const goods = new Set();
+  roles.forEach(r => r.buys.slice(0,3).forEach(b => goods.add(b)));
+  interests.forEach(i => i.products.slice(0,2).forEach(p => goods.add(p)));
+
+  /* ===== 推荐商城 ===== */
+  let primaryMallKey = st ? st.mall : (inc && inc.premium ? "haixiang" : "yuegou");
+  /* 修正：囤货党 + 高收入 → 海象 ; 性价比党 + 低收入 → 闪购 ; 均衡派 → 悦购 */
+  const others = ["yuegou","haixiang","shangou"].filter(k => k !== primaryMallKey);
+
+  /* ===== 示例提问（出题素材） ===== */
+  const sampleQueries = [];
+  if (interests.length) {
+    const pickInt = interests[0];
+    const pickGood = pickInt.products[Math.floor(Math.random()*pickInt.products.length)];
+    let q = "我想买一个" + pickGood;
+    if (inc) q += "，预算 " + (inc.label.includes("≤5K") ? "1000 元以内" :
+                              inc.label.includes("5-10K") ? "2000 元左右" :
+                              inc.label.includes("10-20K") ? "3-5 千" :
+                              inc.label.includes("20-50K") ? "8-10 千" : "不限");
+    if (factors.length) q += "，比较看重 " + factors.slice(0,2).map(f=>f.label).join("和");
+    if (st) q += "，是" + st.label;
+    q += "，你觉得哪家平台更合适?";
+    sampleQueries.push(q);
+  }
+  if (roles.length) {
+    sampleQueries.push("作为" + roles[0].name + "，最近想换" + roles[0].buys[0] + "，三家商城的同款价格 / 售后差别有多大?");
+  }
+  if (st && st.label === "性价比党") {
+    sampleQueries.push("帮我对比一下三家商城同一款商品的价格 + 运费 + 退换政策，告诉我综合下来哪家最划算。");
+  }
+  if (sampleQueries.length === 0) sampleQueries.push("先在左侧选几个标签，示例提问会自动生成。");
+
+  return {
+    filled, tagLine, nickname, desc,
+    interestNames: interests.map(i => i.name),
+    factorNames: factors.map(f => f.label),
+    pains: Array.from(pains).slice(0, 5),
+    goods: Array.from(goods).slice(0, 8),
+    primaryMall: primaryMallKey, otherMalls: others,
+    primaryReason: st ? st.reason : MALLS[primaryMallKey].why,
+    sampleQueries: sampleQueries.slice(0, 3),
+  };
+}
+
+/* ====== 实时预览渲染 ====== */
+function renderPreview() {
+  const p = buildPersona();
+  /* 进度 */
+  const totalKeys = ["gender","age","city","income","family","style","role","interests","factors","customs"];
+  const filled = totalKeys.filter(k => Array.isArray(state[k]) ? state[k].length > 0 : state[k]).length;
+  const pct = Math.round((filled / totalKeys.length) * 100);
+  $("progressBar").style.width = pct + "%";
+  $("progressPct").textContent = pct + "%";
+
+  if (!p.filled) {
+    $("pvName").textContent = "尚未生成画像";
+    $("pvHead").style.display = ""; $("pvHead").textContent = "先在左侧选几个标签，画像会自动生成 →";
+    $("pvTagLine").style.display = "none";
+    $("pvBody").innerHTML = "";
+    return;
+  }
+  $("pvName").textContent = p.nickname;
+  $("pvHead").style.display = "none";
+  $("pvTagLine").style.display = ""; $("pvTagLine").textContent = p.tagLine;
+
+  let html = "";
+
+  /* 描述 */
+  html += "<div class=\"pv-section\"><h4><span class=\"ic\">📖</span>画像描述</h4>";
+  html += "<div class=\"desc\">" + escapeHtml(p.desc) + "</div></div>";
+
+  /* 兴趣 */
+  if (p.interestNames.length) {
+    html += "<div class=\"pv-section\"><h4><span class=\"ic\">❤️</span>兴趣类目</h4><div class=\"tags\">"
+         + p.interestNames.map(n => "<span class=\"t acc\">" + escapeHtml(n) + "</span>").join("")
+         + "</div></div>";
+  }
+
+  /* 决策因素 */
+  if (p.factorNames.length) {
+    html += "<div class=\"pv-section\"><h4><span class=\"ic\">🎯</span>购物决策因素</h4><div class=\"tags\">"
+         + p.factorNames.map(n => "<span class=\"t\">" + escapeHtml(n) + "</span>").join("")
+         + "</div></div>";
+  }
+
+  /* 推断商品 */
+  if (p.goods.length) {
+    html += "<div class=\"pv-section\"><h4><span class=\"ic\">🛒</span>可能感兴趣的商品</h4><div class=\"tags\">"
+         + p.goods.map(n => "<span class=\"t\">" + escapeHtml(n) + "</span>").join("")
+         + "</div></div>";
+  }
+
+  /* 痛点 */
+  if (p.pains.length) {
+    html += "<div class=\"pv-section\"><h4><span class=\"ic\">⚠️</span>痛点 / 关注点</h4><ul>"
+         + p.pains.map(n => "<li>" + escapeHtml(n) + "</li>").join("")
+         + "</ul></div>";
+  }
+
+  /* 推荐商城 */
+  const pm = MALLS[p.primaryMall];
+  html += "<div class=\"pv-section\"><h4><span class=\"ic\">🏬</span>推荐商城</h4><div class=\"pv-mall-rec\">"
+       + "<div class=\"m primary\"><div class=\"name\">" + pm.emoji + " " + pm.name + " · 首选</div>"
+       + "<div class=\"reason\">" + escapeHtml(p.primaryReason) + "</div></div>"
+       + p.otherMalls.map(k => {
+            const m = MALLS[k];
+            return "<div class=\"m\"><div class=\"name\">" + m.emoji + " " + m.name + "</div>"
+                 + "<div class=\"reason\">" + escapeHtml(m.why) + "</div></div>";
+         }).join("")
+       + "</div></div>";
+
+  /* 示例提问 */
+  html += "<div class=\"pv-section\"><h4><span class=\"ic\">💬</span>示例提问 · 出题素材</h4>";
+  p.sampleQueries.forEach(q => {
+    html += "<div class=\"pv-sample\"><div class=\"pv-sample-content\">" + escapeHtml(q) + "</div></div>";
+    html += "<div style=\"height:8px\"></div>";
+  });
+  html += "</div>";
+
+  $("pvBody").innerHTML = html;
+}
+
+/* ====== 操作按钮 ====== */
+$("enrichBtn").onclick = () => {
+  const p = buildPersona();
+  if (!p.filled) { showToast("先选几个标签再补全 ✨"); return; }
+  state.enriched = true;
+  renderPreview();
+  showToast("✨ 已基于现有标签智能补全");
+};
+
+$("resetBtn").onclick = () => {
+  if (!confirm("确认清空当前所有选择?")) return;
+  Object.keys(state).forEach(k => {
+    if (Array.isArray(state[k])) state[k].length = 0;
+    else state[k] = null;
+  });
+  state.enriched = false;
+  $$(".chip.on").forEach(c => c.classList.remove("on"));
+  $("customChips").innerHTML = "";
+  renderPreview();
+  showToast("已重置");
+};
+
+/* ====== 保存到本地 ====== */
+$("saveBtn").onclick = () => {
+  const p = buildPersona();
+  if (!p.filled) { showToast("先选几个标签再保存"); return; }
+  const entry = {
+    id: "p_" + Date.now(),
+    nickname: p.nickname,
+    tagLine: p.tagLine,
+    desc: p.desc,
+    state: JSON.parse(JSON.stringify(state)),
+    persona: p,
+    savedAt: new Date().toLocaleString("zh-CN"),
+  };
+  history.unshift(entry);
+  if (history.length > 20) history.length = 20;
+  localStorage.setItem("persona_history", JSON.stringify(history));
+  renderHistory();
+  showToast("💾 已保存:" + p.nickname);
+};
+
+/* ====== 历史画像渲染 ====== */
+function renderHistory() {
+  $("histCount").textContent = "(" + history.length + ")";
+  if (!history.length) {
+    $("histList").innerHTML = "<div class=\"hist-empty\">暂无保存的画像 · 点 💾 保存当前画像</div>";
+    return;
+  }
+  $("histList").innerHTML = history.map(h =>
+    "<div class=\"hist-item\" data-id=\"" + h.id + "\">"
+    + "<div class=\"h-ic\">🧬</div>"
+    + "<div class=\"h-info\"><div class=\"h-name\"><b>" + escapeHtml(h.nickname) + "</b></div>"
+    + "<div class=\"h-meta\">" + escapeHtml(h.tagLine || h.savedAt) + "</div></div>"
+    + "<span class=\"h-del\" data-del=\"" + h.id + "\">🗑</span></div>"
+  ).join("");
+  $("histList").querySelectorAll(".hist-item").forEach(el => {
+    el.addEventListener("click", e => {
+      if (e.target.closest("[data-del]")) {
+        const id = e.target.closest("[data-del]").dataset.del;
+        history = history.filter(x => x.id !== id);
+        localStorage.setItem("persona_history", JSON.stringify(history));
+        renderHistory(); showToast("已删除");
+        return;
+      }
+      const id = el.dataset.id;
+      const h = history.find(x => x.id === id);
+      if (!h) return;
+      Object.assign(state, JSON.parse(JSON.stringify(h.state)));
+      reflectStateToChips();
+      renderPreview();
+      showToast("已加载:" + h.nickname);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  });
+}
+
+function reflectStateToChips() {
+  $$(".chips").forEach(group => {
+    if (group.id === "customChips") return;
+    const key = group.dataset.key;
+    const mode = group.dataset.mode;
+    group.querySelectorAll(".chip").forEach(c => {
+      c.classList.remove("on");
+      const v = c.dataset.v;
+      if (mode === "single") { if (state[key] === v) c.classList.add("on"); }
+      else { if ((state[key]||[]).includes(v)) c.classList.add("on"); }
+    });
+  });
+  renderCustoms();
+}
+
+$("clearHist").onclick = () => {
+  if (!history.length) return;
+  if (!confirm("确认清空所有已保存画像?")) return;
+  history = [];
+  localStorage.setItem("persona_history", "[]");
+  renderHistory();
+  showToast("已清空");
+};
+
+/* ====== JSON 导出 ====== */
+$("exportBtn").onclick = () => {
+  const p = buildPersona();
+  if (!p.filled) { showToast("先选几个标签再导出"); return; }
+  const out = {
+    nickname: p.nickname,
+    tagLine: p.tagLine,
+    description: p.desc,
+    interests: p.interestNames,
+    decisionFactors: p.factorNames,
+    likelyToBuy: p.goods,
+    painPoints: p.pains,
+    mallPreference: { primary: p.primaryMall, primaryReason: p.primaryReason, others: p.otherMalls },
+    sampleQueries: p.sampleQueries,
+    rawSelections: state,
+    generatedAt: new Date().toISOString(),
+  };
+  $("jsonCode").textContent = JSON.stringify(out, null, 2);
+  $("jsonMask").classList.add("show");
+};
+$("jsonClose").onclick = () => $("jsonMask").classList.remove("show");
+$("jsonMask").onclick = (e) => { if (e.target.id === "jsonMask") $("jsonMask").classList.remove("show"); };
+$("copyJson").onclick = async () => {
+  try { await navigator.clipboard.writeText($("jsonCode").textContent); showToast("📋 已复制 JSON 到剪贴板"); }
+  catch { showToast("复制失败,请手动选中文本复制"); }
+};
+$("downloadJson").onclick = () => {
+  const blob = new Blob([$("jsonCode").textContent], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = "persona-" + Date.now() + ".json"; a.click();
+  URL.revokeObjectURL(url);
+};
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && $("jsonMask").classList.contains("show")) {
+    $("jsonMask").classList.remove("show");
+  }
+});
+
+/* ====== 启动 ====== */
+renderPreview();
+renderHistory();
+</script>
+
+</body>
+</html>
