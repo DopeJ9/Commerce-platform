@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>商城广场 · 三平台比价电商 Demo</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: #1f2329; line-height: 1.5;
+    min-height: 100%;
+  }
+  body {
+    background:
+      radial-gradient(circle at 8% 12%, rgba(255,77,79,.18), transparent 35%),
+      radial-gradient(circle at 92% 18%, rgba(0,180,216,.18), transparent 38%),
+      radial-gradient(circle at 50% 92%, rgba(114,46,209,.18), transparent 40%),
+      linear-gradient(180deg, #fafbff 0%, #f0f3fa 100%);
+    background-attachment: fixed;
+    overflow-x: hidden;
+  }
+
+  /* 顶部品牌栏 */
+  .top {
+    max-width: 1200px; margin: 0 auto;
+    padding: 22px 28px 0;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .brand .mark {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: conic-gradient(from 90deg, #ff4d4f, #ff7a45, #ffa726, #00b4d8, #0050b3, #722ed1, #f759ab, #ff4d4f);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; box-shadow: 0 8px 24px rgba(50,30,80,.18);
+  }
+  .brand .mark span {
+    width: 36px; height: 36px; border-radius: 9px; background: #fff;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .brand .name {
+    font-size: 22px; font-weight: 800; letter-spacing: 1px;
+    background: linear-gradient(135deg,#1f2329 0%,#5a4dc8 50%,#eb2f96 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .brand .sub {
+    font-size: 11px; color: #8a9099; letter-spacing: 4px; margin-top: 2px;
+  }
+  .top-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .badge-pill {
+    background: rgba(255,255,255,.7); backdrop-filter: blur(6px);
+    border: 1px solid rgba(31,35,41,.08);
+    padding: 6px 14px; border-radius: 999px; font-size: 12px; color: #4a4f59;
+    display: inline-flex; align-items: center; gap: 6px; font-weight: 600;
+  }
+  .badge-pill .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,.18);
+  }
+
+  /* Hero */
+  .hero {
+    max-width: 1200px; margin: 0 auto; padding: 38px 28px 22px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
+  }
+  @media (max-width: 880px) { .hero { grid-template-columns: 1fr; padding: 28px 20px 18px; gap: 24px; } }
+  .hero h1 {
+    font-size: 44px; font-weight: 900; line-height: 1.18; letter-spacing: 1px;
+    background: linear-gradient(135deg,#1f2329 0%,#722ed1 35%,#eb2f96 65%,#ff4d4f 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    margin-bottom: 14px;
+  }
+  @media (max-width: 880px) { .hero h1 { font-size: 32px; } }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg,#0050b3,#00b4d8);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero p.lead {
+    font-size: 16px; color: #4a4f59; margin-bottom: 20px; line-height: 1.7; max-width: 520px;
+  }
+  .hero-stats {
+    display: flex; gap: 20px; flex-wrap: wrap;
+  }
+  .stat-card {
+    background: rgba(255,255,255,.65); backdrop-filter: blur(8px);
+    border: 1px solid rgba(31,35,41,.06); border-radius: 14px;
+    padding: 14px 18px; min-width: 130px;
+    box-shadow: 0 6px 16px rgba(50,30,80,.06);
+  }
+  .stat-card .num {
+    font-size: 22px; font-weight: 800; color: #1f2329;
+    background: linear-gradient(135deg,#722ed1,#eb2f96);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .stat-card .lbl {
+    font-size: 11px; color: #8a9099; margin-top: 2px; letter-spacing: 1px;
+  }
+
+  /* Hero 右边比价插画 */
+  .hero-art {
+    position: relative; height: 320px;
+  }
+  .compare-box {
+    position: absolute; background: #fff; border-radius: 16px;
+    padding: 14px 16px; box-shadow: 0 16px 40px rgba(50,30,80,.12);
+    display: flex; flex-direction: column; gap: 6px; min-width: 168px;
+    border: 1px solid rgba(31,35,41,.04);
+    transition: transform .3s ease;
+  }
+  .compare-box:hover { transform: translateY(-4px) scale(1.04); z-index: 2; }
+  .compare-box .cb-mall { font-size: 11px; color: #8a9099; letter-spacing: 2px; font-weight: 700; }
+  .compare-box .cb-name { font-size: 13px; font-weight: 700; }
+  .compare-box .cb-price { font-size: 22px; font-weight: 800; }
+  .compare-box .cb-tag { font-size: 10px; padding: 2px 8px; border-radius: 4px; align-self: flex-start; font-weight: 700; }
+  .cb-yg { top: 30px; left: 12%; }
+  .cb-yg .cb-mall { color: #ff4d4f; } .cb-yg .cb-price { color: #ff4d4f; }
+  .cb-yg .cb-tag { background: #fff5f0; color: #ff4d4f; }
+  .cb-hx { top: 0; right: 8%; }
+  .cb-hx .cb-mall { color: #0050b3; } .cb-hx .cb-price { color: #0050b3; }
+  .cb-hx .cb-tag { background: #ebf4ff; color: #0050b3; }
+  .cb-sg { bottom: 14px; left: 38%; }
+  .cb-sg .cb-mall { color: #eb2f96; } .cb-sg .cb-price { color: #eb2f96; }
+  .cb-sg .cb-tag { background: #fff0f6; color: #eb2f96; }
+  .hero-art .arrow {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+    font-size: 28px; opacity: .25;
+  }
+  @media (max-width: 880px) { .hero-art { display: none; } }
+
+  /* 三个商城卡片 */
+  .malls {
+    max-width: 1200px; margin: 16px auto 0; padding: 18px 28px 30px;
+  }
+  .section-title {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 14px; flex-wrap: wrap; margin-bottom: 18px;
+  }
+  .section-title .t { font-size: 22px; font-weight: 800; }
+  .section-title .t small { font-size: 13px; color: #8a9099; font-weight: 400; margin-left: 8px; }
+  .section-title .hint { font-size: 12px; color: #8a9099; }
+
+  .mall-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
+  }
+  @media (max-width: 980px) { .mall-grid { grid-template-columns: 1fr; } }
+
+  .mall {
+    background: #fff; border-radius: 22px;
+    overflow: hidden; position: relative;
+    box-shadow: 0 14px 40px rgba(50,30,80,.10);
+    transition: transform .25s ease, box-shadow .25s ease;
+    cursor: pointer;
+    display: flex; flex-direction: column;
+  }
+  .mall:hover { transform: translateY(-6px); box-shadow: 0 24px 60px rgba(50,30,80,.18); }
+
+  .mall .cover {
+    height: 156px; padding: 22px 24px; color: #fff; position: relative; overflow: hidden;
+  }
+  .mall .cover::before {
+    content: ""; position: absolute; right: -50px; bottom: -60px;
+    width: 220px; height: 220px; border-radius: 50%; background: rgba(255,255,255,.14);
+  }
+  .mall .cover::after {
+    content: ""; position: absolute; right: 60px; top: -80px;
+    width: 140px; height: 140px; border-radius: 50%; background: rgba(255,255,255,.08);
+  }
+  .mall .ribbon {
+    position: relative; font-size: 11px; font-weight: 700;
+    background: rgba(255,255,255,.22); border-radius: 999px;
+    padding: 4px 10px; align-self: flex-start; display: inline-block;
+    letter-spacing: 1px;
+  }
+  .mall .cover h2 {
+    font-size: 26px; font-weight: 900; margin-top: 10px; position: relative; letter-spacing: 1px;
+  }
+  .mall .cover .en {
+    font-size: 11px; opacity: .85; letter-spacing: 4px; margin-top: 2px; position: relative;
+  }
+  .mall .cover .slogan {
+    font-size: 13px; opacity: .92; margin-top: 12px; position: relative;
+  }
+  .mall .icon-big {
+    position: absolute; right: 22px; top: 18px; font-size: 60px; opacity: .35;
+  }
+
+  /* 三个不同主题渐变 */
+  .mall-yg .cover { background: linear-gradient(135deg,#ff4d4f,#ff7a45 60%,#ffa726); }
+  .mall-hx .cover { background: linear-gradient(135deg,#0050b3,#0091ea 55%,#00b4d8); }
+  .mall-sg .cover { background: linear-gradient(135deg,#722ed1,#eb2f96 55%,#f759ab); }
+
+  .mall .body { padding: 18px 22px 0; flex: 1; }
+  .mall .feat { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+  .feat span {
+    font-size: 11px; padding: 3px 9px; border-radius: 999px;
+    background: #f5f6f8; color: #4a4f59; font-weight: 600;
+  }
+  .mall-yg .feat span { background: #fff5f0; color: #ff4d4f; }
+  .mall-hx .feat span { background: #ebf4ff; color: #0050b3; }
+  .mall-sg .feat span { background: #fff0f6; color: #eb2f96; }
+
+  .rule-mini { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .rule-mini .rule {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 13px; color: #4a4f59;
+  }
+  .rule-mini .rule .ic {
+    flex-shrink: 0; width: 24px; height: 24px; border-radius: 7px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 12px; margin-top: -1px;
+  }
+  .mall-yg .rule-mini .rule .ic { background: #fff5f0; color: #ff4d4f; }
+  .mall-hx .rule-mini .rule .ic { background: #ebf4ff; color: #0050b3; }
+  .mall-sg .rule-mini .rule .ic { background: #fff0f6; color: #eb2f96; }
+  .rule-mini .rule b { color: #1f2329; }
+
+  .mall .footer-bar {
+    padding: 14px 22px 22px; display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px dashed #ececf0;
+  }
+  .mall .meta-left { font-size: 11px; color: #8a9099; }
+  .mall .meta-left b { color: #1f2329; font-size: 13px; font-weight: 800; }
+  .enter-btn {
+    padding: 8px 18px; border-radius: 999px; color: #fff; font-size: 13px;
+    font-weight: 700; border: none; cursor: pointer; transition: .15s; letter-spacing: 1px;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+  }
+  .mall-yg .enter-btn { background: linear-gradient(135deg,#ff4d4f,#ff7a45); box-shadow: 0 6px 16px rgba(255,77,79,.3); }
+  .mall-hx .enter-btn { background: linear-gradient(135deg,#0050b3,#00b4d8); box-shadow: 0 6px 16px rgba(0,80,179,.3); }
+  .mall-sg .enter-btn { background: linear-gradient(135deg,#722ed1,#f759ab); box-shadow: 0 6px 16px rgba(235,47,150,.3); }
+  .enter-btn:hover { transform: translateY(-1px) scale(1.04); }
+
+  /* 比价对照表 */
+  .compare-section {
+    max-width: 1200px; margin: 18px auto; padding: 12px 28px 50px;
+  }
+  .table-wrap {
+    background: #fff; border-radius: 18px; overflow: auto;
+    box-shadow: 0 8px 24px rgba(50,30,80,.08);
+    border: 1px solid #ececf0;
+  }
+  table.compare {
+    width: 100%; border-collapse: collapse; min-width: 760px; font-size: 13px;
+  }
+  table.compare th, table.compare td {
+    padding: 14px 16px; text-align: center; border-bottom: 1px solid #f0f1f3;
+  }
+  table.compare thead th {
+    background: #fafbfc; font-weight: 700; color: #1f2329; font-size: 13px;
+  }
+  table.compare thead th.h-yg { color: #ff4d4f; background: #fff5f0; }
+  table.compare thead th.h-hx { color: #0050b3; background: #ebf4ff; }
+  table.compare thead th.h-sg { color: #eb2f96; background: #fff0f6; }
+  table.compare td.product-cell {
+    text-align: left; font-weight: 600;
+    display: flex; align-items: center; gap: 10px;
+  }
+  table.compare td.product-cell .emo { font-size: 22px; }
+  table.compare .price { font-weight: 800; font-size: 15px; }
+  table.compare .price.lowest { color: #16a34a; }
+  table.compare .price.highest { color: #b0b4bb; text-decoration: line-through; }
+  table.compare tbody tr:hover { background: #fafbfc; }
+
+  .legend { display: flex; gap: 14px; margin-top: 12px; font-size: 12px; color: #8a9099; flex-wrap: wrap; }
+  .legend i {
+    display: inline-block; width: 12px; height: 4px; border-radius: 2px;
+    vertical-align: middle; margin-right: 5px;
+  }
+  .legend .lo i { background: #16a34a; }
+  .legend .hi i { background: #b0b4bb; }
+
+  footer.mainfoot {
+    text-align: center; color: #8a9099; font-size: 12px; padding: 24px;
+    border-top: 1px solid rgba(31,35,41,.05);
+  }
+  footer.mainfoot b { color: #4a4f59; }
+</style>
+</head>
+<body>
+  <div class="top">
+    <div class="brand">
+      <div class="mark"><span>🛍️</span></div>
+      <div>
+        <div class="name">三方比价电商 · 商城广场</div>
+        <div class="sub">MULTI-MALL DEMO · COMPARE & CHOOSE</div>
+      </div>
+    </div>
+    <div class="top-actions">
+      <span class="badge-pill"><span class="dot"></span>3 个商城已上线</span>
+      <span class="badge-pill">⚡ 同款比价 · 一键跳转</span>
+      <span class="badge-pill">🧾 平台规则透明可见</span>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div>
+      <h1>同样的商品<br/>三家商城<em>谁更值</em>？</h1>
+      <p class="lead">
+        在这个比价 Demo 里，我们模拟了三个真实风格迥异的电商平台 ——
+        <b style="color:#ff4d4f">悦购</b> 综合大牌、
+        <b style="color:#0050b3">海象</b> 品质严选、
+        <b style="color:#eb2f96">闪购</b> 价格屠夫。<br/>
+        相同的几款核心商品在三个平台同时上架，<b>但价格、运费、退换政策、会员保障都不一样</b>，
+        看看你能不能找到最适合自己的那一家。
+      </p>
+      <div class="hero-stats">
+        <div class="stat-card"><div class="num">3</div><div class="lbl">购物平台</div></div>
+        <div class="stat-card"><div class="num">85+</div><div class="lbl">在售商品</div></div>
+        <div class="stat-card"><div class="num">6</div><div class="lbl">同款比价</div></div>
+        <div class="stat-card"><div class="num">3500+</div><div class="lbl">SKU 组合</div></div>
+      </div>
+    </div>
+
+    <div class="hero-art">
+      <div class="compare-box cb-yg">
+        <div class="cb-mall">YUEGOU</div>
+        <div class="cb-name">极光 X9 Pro Max</div>
+        <div class="cb-price">¥5999</div>
+        <div class="cb-tag">综合大牌 · 7天无理由</div>
+      </div>
+      <div class="compare-box cb-hx">
+        <div class="cb-mall">HAIXIANG</div>
+        <div class="cb-name">极光 X9 Pro Max</div>
+        <div class="cb-price">¥6479</div>
+        <div class="cb-tag">PLUS 95折 · 15+30天保障</div>
+      </div>
+      <div class="compare-box cb-sg">
+        <div class="cb-mall">FLASHHUB</div>
+        <div class="cb-name">极光 X9 Pro Max</div>
+        <div class="cb-price">¥5459</div>
+        <div class="cb-tag">⚡ 限时秒杀 · 仅 3 天退</div>
+      </div>
+      <div class="arrow">⇄</div>
+    </div>
+  </section>
+
+  <section class="malls">
+    <div class="section-title">
+      <div class="t">🏬 选择你的商城<small>· 点击进入对应平台</small></div>
+      <div class="hint">每家商城有自己的优惠规则、退换政策与配送时效</div>
+    </div>
+    <div class="mall-grid">
+      <!-- 悦购 -->
+      <a class="mall mall-yg" href="malls/yuegou.html">
+        <div class="cover">
+          <div class="icon-big">🛍️</div>
+          <span class="ribbon">★ 推荐 · 综合大牌</span>
+          <h2>悦购商城</h2>
+          <div class="en">YUEGOU MALL</div>
+          <div class="slogan">国民购物 · 性价比之选 · 9 大品类全覆盖</div>
+        </div>
+        <div class="body">
+          <div class="feat"><span>27 款商品</span><span>1300+ SKU</span><span>橙卡 88 折</span></div>
+          <div class="rule-mini">
+            <div class="rule"><span class="ic">💰</span><div>满 <b>300 / 600 / 1000</b> 元 · 立减 <b>30 / 80 / 150</b></div></div>
+            <div class="rule"><span class="ic">🚚</span><div>满 <b>99</b> 元包邮 · 否则 10 元/单</div></div>
+            <div class="rule"><span class="ic">↩️</span><div><b>7 天无理由</b> + 30 天价保 · 假一赔十</div></div>
+          </div>
+        </div>
+        <div class="footer-bar">
+          <div class="meta-left">主推：<b>极光 X9 Pro Max ¥5999</b></div>
+          <span class="enter-btn">进入商城 →</span>
+        </div>
+      </a>
+
+      <!-- 海象 -->
+      <a class="mall mall-hx" href="malls/haixiang.html">
+        <div class="cover">
+          <div class="icon-big">🌊</div>
+          <span class="ribbon">💎 品质 · 会员制</span>
+          <h2>海象优选</h2>
+          <div class="en">HAIXIANG SELECT</div>
+          <div class="slogan">全球严选 · 保税仓直发 · 品质优先</div>
+        </div>
+        <div class="body">
+          <div class="feat"><span>32 款 · 5 款独家</span><span>波尔多/M9/海蓝</span><span>PLUS 95 折</span></div>
+          <div class="rule-mini">
+            <div class="rule"><span class="ic">💰</span><div>满 <b>500 / 1500</b> 元 · 立减 <b>50 / 200</b></div></div>
+            <div class="rule"><span class="ic">🚚</span><div>满 <b>199</b> 元免邮 · 跨境冷链 +20</div></div>
+            <div class="rule"><span class="ic">🛡️</span><div><b>15 天无理由 + 30 天质保</b> · 假一赔十万</div></div>
+          </div>
+        </div>
+        <div class="footer-bar">
+          <div class="meta-left">主推：<b>波尔多 AOC 红酒 ¥1299</b></div>
+          <span class="enter-btn">进入商城 →</span>
+        </div>
+      </a>
+
+      <!-- 闪购 -->
+      <a class="mall mall-sg" href="malls/shangou.html">
+        <div class="cover">
+          <div class="icon-big">⚡</div>
+          <span class="ribbon">🔥 价格屠夫 · 限时</span>
+          <h2>闪购天地</h2>
+          <div class="en">FLASHHUB</div>
+          <div class="slogan">限时秒杀 · 网红爆款 · 9 折破价</div>
+        </div>
+        <div class="body">
+          <div class="feat"><span>32 款 · 5 款独家</span><span>9.9 元面膜</span><span>每日整点抢券</span></div>
+          <div class="rule-mini">
+            <div class="rule"><span class="ic">💰</span><div>满 <b>99 / 199 / 399</b> · 立减 <b>15 / 35 / 80</b></div></div>
+            <div class="rule"><span class="ic">🚚</span><div>满 <b>69</b> 元包邮 · 否则 8 元/单</div></div>
+            <div class="rule"><span class="ic">⚠️</span><div><b>仅 3 天</b>无理由 · 秒杀区不退不换</div></div>
+          </div>
+        </div>
+        <div class="footer-bar">
+          <div class="meta-left">主推：<b>10 片面膜 ¥19</b></div>
+          <span class="enter-btn">进入商城 →</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="compare-section">
+    <div class="section-title">
+      <div class="t">⚖️ 同款 6 件商品 · 三家比价<small>· 绿色为最低价 / 灰色划线为最高价</small></div>
+      <div class="hint">同一件商品三家都能买到 · 价格差异源自服务保障的差别</div>
+    </div>
+    <div class="table-wrap">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th style="text-align:left;padding-left:22px">商品</th>
+            <th class="h-yg">🛍️ 悦购商城<br/><small style="font-weight:400;font-size:11px;opacity:.7">综合大牌</small></th>
+            <th class="h-hx">🌊 海象优选<br/><small style="font-weight:400;font-size:11px;opacity:.7">PLUS · 品质严选</small></th>
+            <th class="h-sg">⚡ 闪购天地<br/><small style="font-weight:400;font-size:11px;opacity:.7">9 折秒杀</small></th>
+            <th>差价</th>
+          </tr>
+        </thead>
+        <tbody id="compareTbody"></tbody>
+      </table>
+    </div>
+    <div class="legend">
+      <span class="lo"><i></i>最低价（推荐入手）</span>
+      <span class="hi"><i></i>最高价（划线对照）</span>
+      <span style="margin-left:auto;color:#b0b4bb">* 同款指共享商品 ID，三家商城价格自动同步联动</span>
+    </div>
+  </section>
+
+  <footer class="mainfoot">
+    <b>三方比价电商 Demo</b> · 一级广场 + 三个独立商城 · 全部纯前端 · CSS / JS 内联在各自 HTML · 适合演示拖拽 / 录屏 / 截图<br/>
+    📁 文件结构：<code>index.html</code> · <code>malls/yuegou.html</code> · <code>malls/haixiang.html</code> · <code>malls/shangou.html</code>
+  </footer>
+
+<script>
+/* 同款比价数据：6 件商品在三家平台的价格（以悦购为基准计算） */
+const COMPARE_ITEMS = [
+  { emo: "📱", name: "极光 X9 Pro Max 5G 手机",  base: 5999 },
+  { emo: "🎧", name: "声海 Pro2 真无线降噪耳机", base: 799  },
+  { emo: "👟", name: "FlyRun 透气缓震运动跑鞋",  base: 399  },
+  { emo: "👕", name: "纯棉简约百搭基础款 T 恤",  base: 79   },
+  { emo: "☕", name: "豆光 全球精品手冲咖啡豆",  base: 78   },
+  { emo: "🧱", name: "BlockJoy 益智拼装积木",    base: 99   },
+];
+const tbody = document.getElementById("compareTbody");
+COMPARE_ITEMS.forEach(item => {
+  const yg = item.base;
+  const hx = Math.round(item.base * 1.08);
+  const sg = Math.round(item.base * 0.91);
+  const arr = [["yg",yg],["hx",hx],["sg",sg]];
+  const min = Math.min(yg,hx,sg);
+  const max = Math.max(yg,hx,sg);
+  const cells = arr.map(([k,v]) => {
+    const cls = v===min ? "lowest" : (v===max ? "highest" : "");
+    return `<td class="price ${cls}">¥${v}</td>`;
+  }).join("");
+  tbody.insertAdjacentHTML("beforeend", `
+    <tr>
+      <td class="product-cell"><span class="emo">${item.emo}</span><span>${item.name}</span></td>
+      ${cells}
+      <td style="font-weight:700;color:#722ed1">¥${max - min}</td>
+    </tr>
+  `);
+});
+</script>
+</body>
+</html>
