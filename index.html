@@ -5,477 +5,514 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>商城广场 · 三平台比价电商 Demo</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body {
-    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-    color: #1f2329; line-height: 1.5;
-    min-height: 100%;
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  a, a:visited, a:hover, a:active { text-decoration: none; color: inherit; }
+
+  :root {
+    --bg: #0a0d14;
+    --card: #131722;
+    --card-hover: #1a1f2e;
+    --line: rgba(255,255,255,.07);
+    --line-2: rgba(255,255,255,.12);
+    --text: #ecedf3;
+    --text-2: #9ba1ad;
+    --text-3: #6b7180;
+    --yg-1: #ff6a3d; --yg-2: #ff3b5c;
+    --hx-1: #3aaaff; --hx-2: #2563eb;
+    --sg-1: #c084fc; --sg-2: #ec4899;
+    --pp-1: #34d399; --pp-2: #06b6d4;
   }
+
+  html, body { background: var(--bg); color: var(--text); min-height: 100%; }
   body {
+    font-family: -apple-system, "SF Pro Display", "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+    line-height: 1.55; overflow-x: hidden;
     background:
-      radial-gradient(circle at 8% 12%, rgba(255,77,79,.18), transparent 35%),
-      radial-gradient(circle at 92% 18%, rgba(0,180,216,.18), transparent 38%),
-      radial-gradient(circle at 50% 92%, rgba(114,46,209,.18), transparent 40%),
-      linear-gradient(180deg, #fafbff 0%, #f0f3fa 100%);
+      radial-gradient(ellipse 70% 45% at 20% 0%, rgba(255,107,77,.10), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 25%, rgba(58,170,255,.10), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 50% 80%, rgba(192,132,252,.08), transparent 60%),
+      var(--bg);
     background-attachment: fixed;
-    overflow-x: hidden;
   }
 
-  /* 顶部品牌栏 */
-  .top {
-    max-width: 1200px; margin: 0 auto;
-    padding: 22px 28px 0;
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: 16px;
+  /* 顶部导航 */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background: rgba(10,13,20,.72);
+    border-bottom: 1px solid var(--line);
   }
-  .brand {
-    display: flex; align-items: center; gap: 12px;
+  .nav-inner {
+    max-width: 1240px; margin: 0 auto; padding: 14px 28px;
+    display: flex; align-items: center; gap: 20px;
   }
-  .brand .mark {
-    width: 44px; height: 44px; border-radius: 12px;
-    background: conic-gradient(from 90deg, #ff4d4f, #ff7a45, #ffa726, #00b4d8, #0050b3, #722ed1, #f759ab, #ff4d4f);
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 14px; letter-spacing: .5px; }
+  .logo-mark {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: conic-gradient(from 220deg, #ff6a3d, #ec4899, #3aaaff, #ff6a3d);
     display: flex; align-items: center; justify-content: center;
-    font-size: 22px; box-shadow: 0 8px 24px rgba(50,30,80,.18);
+    box-shadow: 0 6px 20px rgba(255,107,77,.25);
+    flex-shrink: 0;
   }
-  .brand .mark span {
-    width: 36px; height: 36px; border-radius: 9px; background: #fff;
-    display: flex; align-items: center; justify-content: center;
+  .logo-mark::after {
+    content: ""; width: 20px; height: 20px; border-radius: 5px; background: var(--bg);
   }
-  .brand .name {
-    font-size: 22px; font-weight: 800; letter-spacing: 1px;
-    background: linear-gradient(135deg,#1f2329 0%,#5a4dc8 50%,#eb2f96 100%);
+  .logo .name {
+    background: linear-gradient(120deg,#fff 0%, #c5c8d2 100%);
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
-  .brand .sub {
-    font-size: 11px; color: #8a9099; letter-spacing: 4px; margin-top: 2px;
+  .nav-spacer { flex: 1; }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-links a {
+    font-size: 13px; color: var(--text-2); font-weight: 500;
+    padding: 7px 14px; border-radius: 999px; transition: .2s;
   }
-  .top-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-  .badge-pill {
-    background: rgba(255,255,255,.7); backdrop-filter: blur(6px);
-    border: 1px solid rgba(31,35,41,.08);
-    padding: 6px 14px; border-radius: 999px; font-size: 12px; color: #4a4f59;
-    display: inline-flex; align-items: center; gap: 6px; font-weight: 600;
+  .nav-links a:hover { color: var(--text); background: rgba(255,255,255,.05); }
+  .badge-live {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; padding: 5px 10px; border-radius: 999px;
+    background: rgba(34,197,94,.12); color: #4ade80; font-weight: 600;
+    border: 1px solid rgba(34,197,94,.2);
   }
-  .badge-pill .dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,.18);
+  .badge-live::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: #22c55e; box-shadow: 0 0 8px #22c55e;
   }
 
-  /* Hero */
+  /* HERO */
   .hero {
-    max-width: 1200px; margin: 0 auto; padding: 38px 28px 22px;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
+    max-width: 1240px; margin: 0 auto; padding: 90px 28px 36px;
+    text-align: center;
   }
-  @media (max-width: 880px) { .hero { grid-template-columns: 1fr; padding: 28px 20px 18px; gap: 24px; } }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11px; padding: 5px 12px; border-radius: 999px;
+    background: rgba(255,255,255,.04); border: 1px solid var(--line);
+    color: var(--text-2); margin-bottom: 24px; letter-spacing: 2px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: #ec4899; box-shadow: 0 0 8px #ec4899; }
   .hero h1 {
-    font-size: 44px; font-weight: 900; line-height: 1.18; letter-spacing: 1px;
-    background: linear-gradient(135deg,#1f2329 0%,#722ed1 35%,#eb2f96 65%,#ff4d4f 100%);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-    margin-bottom: 14px;
+    font-size: clamp(38px, 5.6vw, 64px);
+    font-weight: 800; line-height: 1.08; letter-spacing: -1.2px;
+    margin-bottom: 18px;
   }
-  @media (max-width: 880px) { .hero h1 { font-size: 32px; } }
-  .hero h1 em {
-    font-style: normal;
-    background: linear-gradient(135deg,#0050b3,#00b4d8);
+  .hero h1 .grad {
+    background: linear-gradient(120deg, #ff6a3d 0%, #ec4899 50%, #c084fc 100%);
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
   .hero p.lead {
-    font-size: 16px; color: #4a4f59; margin-bottom: 20px; line-height: 1.7; max-width: 520px;
+    max-width: 560px; margin: 0 auto;
+    font-size: 16px; color: var(--text-2); line-height: 1.7;
   }
-  .hero-stats {
-    display: flex; gap: 20px; flex-wrap: wrap;
+  .hero p.lead b { color: var(--text); font-weight: 600; }
+
+  /* 通用区块 */
+  .section { max-width: 1240px; margin: 0 auto; padding: 36px 28px; }
+  .section-head {
+    display: flex; align-items: end; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px; margin-bottom: 22px;
   }
-  .stat-card {
-    background: rgba(255,255,255,.65); backdrop-filter: blur(8px);
-    border: 1px solid rgba(31,35,41,.06); border-radius: 14px;
-    padding: 14px 18px; min-width: 130px;
-    box-shadow: 0 6px 16px rgba(50,30,80,.06);
+  .section-head h2 {
+    font-size: clamp(22px, 2.6vw, 28px);
+    font-weight: 800; letter-spacing: -.4px;
   }
-  .stat-card .num {
-    font-size: 22px; font-weight: 800; color: #1f2329;
-    background: linear-gradient(135deg,#722ed1,#eb2f96);
+  .section-head h2 .num-tag {
+    display: inline-block; font-size: 11px; vertical-align: middle;
+    padding: 3px 9px; border-radius: 999px;
+    background: rgba(255,255,255,.05); color: var(--text-2);
+    margin-left: 8px; font-weight: 600; letter-spacing: 1px;
+  }
+  .section-head .desc { color: var(--text-2); font-size: 13px; max-width: 460px; }
+
+  /* 用户画像 Banner */
+  .persona-banner {
+    position: relative; overflow: hidden;
+    background: linear-gradient(120deg, #0c1220 0%, #15202b 60%, #0c1220 100%);
+    border: 1px solid var(--line); border-radius: 22px;
+    padding: 32px 40px;
+    display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center;
+  }
+  .persona-banner::before {
+    content: ""; position: absolute; right: -100px; top: -120px;
+    width: 360px; height: 360px;
+    background: radial-gradient(circle, rgba(52,211,153,.18), transparent 70%);
+    pointer-events: none;
+  }
+  .persona-banner::after {
+    content: ""; position: absolute; left: -80px; bottom: -120px;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(6,182,212,.16), transparent 70%);
+    pointer-events: none;
+  }
+  .persona-banner .pl { position: relative; }
+  .persona-banner .ribbon {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; padding: 5px 11px; border-radius: 999px;
+    background: rgba(52,211,153,.12); color: #6ee7b7; font-weight: 700;
+    border: 1px solid rgba(52,211,153,.25); letter-spacing: 1.5px;
+    margin-bottom: 14px;
+  }
+  .persona-banner h3 {
+    font-size: clamp(22px, 2.5vw, 30px); font-weight: 800;
+    letter-spacing: -.4px; line-height: 1.2; margin-bottom: 10px;
+  }
+  .persona-banner h3 .grad-g {
+    background: linear-gradient(120deg, var(--pp-1) 0%, var(--pp-2) 100%);
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
-  .stat-card .lbl {
-    font-size: 11px; color: #8a9099; margin-top: 2px; letter-spacing: 1px;
+  .persona-banner .sub {
+    color: var(--text-2); font-size: 14px; line-height: 1.7; max-width: 580px;
+  }
+  .persona-banner .pr { position: relative; }
+  .pgo {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 24px; border-radius: 14px; font-weight: 700; font-size: 14px;
+    color: #001a13; letter-spacing: .5px;
+    background: linear-gradient(135deg, var(--pp-1), var(--pp-2));
+    box-shadow: 0 12px 30px -8px rgba(52,211,153,.4);
+    transition: transform .25s ease, box-shadow .25s;
+    white-space: nowrap;
+  }
+  .pgo:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 18px 36px -8px rgba(52,211,153,.55); }
+  .pgo svg { transition: transform .25s; }
+  .pgo:hover svg { transform: translateX(4px); }
+  @media (max-width: 720px) {
+    .persona-banner { grid-template-columns: 1fr; padding: 28px 22px; }
+    .persona-banner .pr { justify-self: start; }
   }
 
-  /* Hero 右边比价插画 */
-  .hero-art {
-    position: relative; height: 320px;
-  }
-  .compare-box {
-    position: absolute; background: #fff; border-radius: 16px;
-    padding: 14px 16px; box-shadow: 0 16px 40px rgba(50,30,80,.12);
-    display: flex; flex-direction: column; gap: 6px; min-width: 168px;
-    border: 1px solid rgba(31,35,41,.04);
-    transition: transform .3s ease;
-  }
-  .compare-box:hover { transform: translateY(-4px) scale(1.04); z-index: 2; }
-  .compare-box .cb-mall { font-size: 11px; color: #8a9099; letter-spacing: 2px; font-weight: 700; }
-  .compare-box .cb-name { font-size: 13px; font-weight: 700; }
-  .compare-box .cb-price { font-size: 22px; font-weight: 800; }
-  .compare-box .cb-tag { font-size: 10px; padding: 2px 8px; border-radius: 4px; align-self: flex-start; font-weight: 700; }
-  .cb-yg { top: 30px; left: 12%; }
-  .cb-yg .cb-mall { color: #ff4d4f; } .cb-yg .cb-price { color: #ff4d4f; }
-  .cb-yg .cb-tag { background: #fff5f0; color: #ff4d4f; }
-  .cb-hx { top: 0; right: 8%; }
-  .cb-hx .cb-mall { color: #0050b3; } .cb-hx .cb-price { color: #0050b3; }
-  .cb-hx .cb-tag { background: #ebf4ff; color: #0050b3; }
-  .cb-sg { bottom: 14px; left: 38%; }
-  .cb-sg .cb-mall { color: #eb2f96; } .cb-sg .cb-price { color: #eb2f96; }
-  .cb-sg .cb-tag { background: #fff0f6; color: #eb2f96; }
-  .hero-art .arrow {
-    position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
-    font-size: 28px; opacity: .25;
-  }
-  @media (max-width: 880px) { .hero-art { display: none; } }
-
-  /* 三个商城卡片 */
-  .malls {
-    max-width: 1200px; margin: 16px auto 0; padding: 18px 28px 30px;
-  }
-  .section-title {
-    display: flex; align-items: baseline; justify-content: space-between;
-    gap: 14px; flex-wrap: wrap; margin-bottom: 18px;
-  }
-  .section-title .t { font-size: 22px; font-weight: 800; }
-  .section-title .t small { font-size: 13px; color: #8a9099; font-weight: 400; margin-left: 8px; }
-  .section-title .hint { font-size: 12px; color: #8a9099; }
-
-  .mall-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
-  }
-  @media (max-width: 980px) { .mall-grid { grid-template-columns: 1fr; } }
+  /* 三个商城卡片（精简版） */
+  .malls { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  @media (max-width: 980px) { .malls { grid-template-columns: 1fr; } }
 
   .mall {
-    background: #fff; border-radius: 22px;
-    overflow: hidden; position: relative;
-    box-shadow: 0 14px 40px rgba(50,30,80,.10);
-    transition: transform .25s ease, box-shadow .25s ease;
-    cursor: pointer;
-    display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 20px; padding: 26px 26px 22px;
+    transition: transform .35s cubic-bezier(.2,.7,.3,1), border-color .25s, background .25s;
+    cursor: pointer; display: flex; flex-direction: column; gap: 18px;
   }
-  .mall:hover { transform: translateY(-6px); box-shadow: 0 24px 60px rgba(50,30,80,.18); }
+  .mall::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    border-radius: 20px;
+    background: radial-gradient(120% 80% at 50% 0%, var(--glow), transparent 65%);
+    opacity: .5; transition: opacity .3s;
+  }
+  .mall:hover {
+    transform: translateY(-5px);
+    border-color: var(--line-2);
+    background: var(--card-hover);
+  }
+  .mall:hover::before { opacity: .9; }
+  .mall:hover .enter-arrow { transform: translateX(5px); }
 
-  .mall .cover {
-    height: 156px; padding: 22px 24px; color: #fff; position: relative; overflow: hidden;
-  }
-  .mall .cover::before {
-    content: ""; position: absolute; right: -50px; bottom: -60px;
-    width: 220px; height: 220px; border-radius: 50%; background: rgba(255,255,255,.14);
-  }
-  .mall .cover::after {
-    content: ""; position: absolute; right: 60px; top: -80px;
-    width: 140px; height: 140px; border-radius: 50%; background: rgba(255,255,255,.08);
-  }
-  .mall .ribbon {
-    position: relative; font-size: 11px; font-weight: 700;
-    background: rgba(255,255,255,.22); border-radius: 999px;
-    padding: 4px 10px; align-self: flex-start; display: inline-block;
-    letter-spacing: 1px;
-  }
-  .mall .cover h2 {
-    font-size: 26px; font-weight: 900; margin-top: 10px; position: relative; letter-spacing: 1px;
-  }
-  .mall .cover .en {
-    font-size: 11px; opacity: .85; letter-spacing: 4px; margin-top: 2px; position: relative;
-  }
-  .mall .cover .slogan {
-    font-size: 13px; opacity: .92; margin-top: 12px; position: relative;
-  }
-  .mall .icon-big {
-    position: absolute; right: 22px; top: 18px; font-size: 60px; opacity: .35;
-  }
+  .mall-yg { --glow: rgba(255,107,77,.30); }
+  .mall-hx { --glow: rgba(58,170,255,.30); }
+  .mall-sg { --glow: rgba(236,72,153,.30); }
 
-  /* 三个不同主题渐变 */
-  .mall-yg .cover { background: linear-gradient(135deg,#ff4d4f,#ff7a45 60%,#ffa726); }
-  .mall-hx .cover { background: linear-gradient(135deg,#0050b3,#0091ea 55%,#00b4d8); }
-  .mall-sg .cover { background: linear-gradient(135deg,#722ed1,#eb2f96 55%,#f759ab); }
+  .mall .top { position: relative; display: flex; align-items: center; gap: 14px; }
+  .mall .icon-box {
+    width: 52px; height: 52px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; flex-shrink: 0;
+    box-shadow: 0 12px 28px -8px var(--glow);
+  }
+  .mall-yg .icon-box { background: linear-gradient(135deg,var(--yg-1),var(--yg-2)); }
+  .mall-hx .icon-box { background: linear-gradient(135deg,var(--hx-1),var(--hx-2)); }
+  .mall-sg .icon-box { background: linear-gradient(135deg,var(--sg-1),var(--sg-2)); }
+  .mall .ttl { font-size: 18px; font-weight: 800; letter-spacing: -.2px; }
+  .mall .en { font-size: 10px; color: var(--text-3); letter-spacing: 2.5px; margin-top: 3px; font-weight: 600; }
+  .mall .ribbon-tag {
+    margin-left: auto;
+    font-size: 10px; padding: 4px 9px; border-radius: 6px;
+    font-weight: 700; letter-spacing: 1px;
+  }
+  .mall-yg .ribbon-tag { color: #ffb597; background: rgba(255,107,77,.10); border: 1px solid rgba(255,107,77,.22); }
+  .mall-hx .ribbon-tag { color: #93c5fd; background: rgba(58,170,255,.10); border: 1px solid rgba(58,170,255,.22); }
+  .mall-sg .ribbon-tag { color: #f0abfc; background: rgba(236,72,153,.10); border: 1px solid rgba(236,72,153,.22); }
 
-  .mall .body { padding: 18px 22px 0; flex: 1; }
-  .mall .feat { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
-  .feat span {
-    font-size: 11px; padding: 3px 9px; border-radius: 999px;
-    background: #f5f6f8; color: #4a4f59; font-weight: 600;
-  }
-  .mall-yg .feat span { background: #fff5f0; color: #ff4d4f; }
-  .mall-hx .feat span { background: #ebf4ff; color: #0050b3; }
-  .mall-sg .feat span { background: #fff0f6; color: #eb2f96; }
+  .mall .slogan { position: relative; font-size: 13px; color: var(--text-2); line-height: 1.65; }
 
-  .rule-mini { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
-  .rule-mini .rule {
-    display: flex; align-items: flex-start; gap: 10px;
-    font-size: 13px; color: #4a4f59;
+  .mall .key-rules {
+    position: relative; display: flex; gap: 8px; flex-wrap: wrap;
+    padding-top: 4px; border-top: 1px dashed var(--line);
+    padding-top: 14px;
   }
-  .rule-mini .rule .ic {
-    flex-shrink: 0; width: 24px; height: 24px; border-radius: 7px;
-    display: inline-flex; align-items: center; justify-content: center;
-    font-size: 12px; margin-top: -1px;
+  .key-rules .chip {
+    font-size: 11px; padding: 4px 10px; border-radius: 6px;
+    background: rgba(255,255,255,.04); color: var(--text-2);
+    border: 1px solid var(--line);
   }
-  .mall-yg .rule-mini .rule .ic { background: #fff5f0; color: #ff4d4f; }
-  .mall-hx .rule-mini .rule .ic { background: #ebf4ff; color: #0050b3; }
-  .mall-sg .rule-mini .rule .ic { background: #fff0f6; color: #eb2f96; }
-  .rule-mini .rule b { color: #1f2329; }
+  .mall-yg .key-rules .chip { color: #ffb597; border-color: rgba(255,107,77,.18); background: rgba(255,107,77,.06); }
+  .mall-hx .key-rules .chip { color: #93c5fd; border-color: rgba(58,170,255,.18); background: rgba(58,170,255,.06); }
+  .mall-sg .key-rules .chip { color: #f0abfc; border-color: rgba(236,72,153,.18); background: rgba(236,72,153,.06); }
 
-  .mall .footer-bar {
-    padding: 14px 22px 22px; display: flex; justify-content: space-between; align-items: center;
-    border-top: 1px dashed #ececf0;
+  .mall .bottom {
+    position: relative; display: flex; align-items: center; justify-content: space-between;
+    padding-top: 4px;
   }
-  .mall .meta-left { font-size: 11px; color: #8a9099; }
-  .mall .meta-left b { color: #1f2329; font-size: 13px; font-weight: 800; }
-  .enter-btn {
-    padding: 8px 18px; border-radius: 999px; color: #fff; font-size: 13px;
-    font-weight: 700; border: none; cursor: pointer; transition: .15s; letter-spacing: 1px;
-    text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+  .mall .price-hint { font-size: 11px; color: var(--text-3); }
+  .mall .price-hint b { color: var(--text); font-size: 13px; font-weight: 700; margin-left: 4px; }
+  .enter {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 700; letter-spacing: .5px;
+    padding: 8px 14px; border-radius: 999px; color: #fff;
   }
-  .mall-yg .enter-btn { background: linear-gradient(135deg,#ff4d4f,#ff7a45); box-shadow: 0 6px 16px rgba(255,77,79,.3); }
-  .mall-hx .enter-btn { background: linear-gradient(135deg,#0050b3,#00b4d8); box-shadow: 0 6px 16px rgba(0,80,179,.3); }
-  .mall-sg .enter-btn { background: linear-gradient(135deg,#722ed1,#f759ab); box-shadow: 0 6px 16px rgba(235,47,150,.3); }
-  .enter-btn:hover { transform: translateY(-1px) scale(1.04); }
+  .mall-yg .enter { background: linear-gradient(135deg,var(--yg-1),var(--yg-2)); box-shadow: 0 6px 18px -6px var(--yg-2); }
+  .mall-hx .enter { background: linear-gradient(135deg,var(--hx-1),var(--hx-2)); box-shadow: 0 6px 18px -6px var(--hx-2); }
+  .mall-sg .enter { background: linear-gradient(135deg,var(--sg-1),var(--sg-2)); box-shadow: 0 6px 18px -6px var(--sg-2); }
+  .enter-arrow { transition: transform .25s ease; }
 
-  /* 比价对照表 */
-  .compare-section {
-    max-width: 1200px; margin: 18px auto; padding: 12px 28px 50px;
+  /* 比价表 */
+  .compare-card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 20px; overflow: hidden;
   }
-  .table-wrap {
-    background: #fff; border-radius: 18px; overflow: auto;
-    box-shadow: 0 8px 24px rgba(50,30,80,.08);
-    border: 1px solid #ececf0;
+  .table-scroll { overflow-x: auto; }
+  table.cmp { width: 100%; border-collapse: collapse; min-width: 720px; }
+  table.cmp th, table.cmp td {
+    padding: 16px 20px; text-align: center;
+    border-bottom: 1px solid var(--line); font-size: 14px;
   }
-  table.compare {
-    width: 100%; border-collapse: collapse; min-width: 760px; font-size: 13px;
+  table.cmp thead th {
+    font-weight: 600; font-size: 11px; letter-spacing: 1.5px;
+    color: var(--text-2); background: rgba(255,255,255,.02);
+    text-transform: uppercase;
   }
-  table.compare th, table.compare td {
-    padding: 14px 16px; text-align: center; border-bottom: 1px solid #f0f1f3;
+  table.cmp thead th.th-yg { color: #ff8d6d; }
+  table.cmp thead th.th-hx { color: #67b8ff; }
+  table.cmp thead th.th-sg { color: #f0abfc; }
+  table.cmp thead th .sub { display: block; font-size: 9px; opacity: .6; margin-top: 2px; letter-spacing: 1px; font-weight: 500; }
+  table.cmp tbody tr:hover { background: rgba(255,255,255,.02); }
+  table.cmp tbody tr:last-child td { border-bottom: none; }
+  table.cmp .product-cell {
+    text-align: left; display: flex; align-items: center; gap: 12px;
   }
-  table.compare thead th {
-    background: #fafbfc; font-weight: 700; color: #1f2329; font-size: 13px;
+  table.cmp .product-cell .emo {
+    font-size: 22px; width: 40px; height: 40px; border-radius: 11px;
+    background: rgba(255,255,255,.04); display: inline-flex;
+    align-items: center; justify-content: center;
   }
-  table.compare thead th.h-yg { color: #ff4d4f; background: #fff5f0; }
-  table.compare thead th.h-hx { color: #0050b3; background: #ebf4ff; }
-  table.compare thead th.h-sg { color: #eb2f96; background: #fff0f6; }
-  table.compare td.product-cell {
-    text-align: left; font-weight: 600;
-    display: flex; align-items: center; gap: 10px;
+  table.cmp .product-cell .pname { font-weight: 600; color: var(--text); font-size: 13px; }
+  table.cmp .product-cell .pdesc { font-size: 10px; color: var(--text-3); margin-top: 2px; letter-spacing: .5px; }
+  table.cmp .price { font-weight: 700; font-size: 15px; color: var(--text); }
+  table.cmp .price.lowest { color: #4ade80; background: rgba(34,197,94,.06); }
+  table.cmp .price.highest { color: var(--text-3); text-decoration: line-through; }
+  table.cmp .price-tag {
+    display: inline-block; font-size: 9px; padding: 1px 6px;
+    border-radius: 4px; margin-left: 5px; font-weight: 700; letter-spacing: 1px;
+    background: rgba(34,197,94,.18); color: #4ade80; vertical-align: middle;
   }
-  table.compare td.product-cell .emo { font-size: 22px; }
-  table.compare .price { font-weight: 800; font-size: 15px; }
-  table.compare .price.lowest { color: #16a34a; }
-  table.compare .price.highest { color: #b0b4bb; text-decoration: line-through; }
-  table.compare tbody tr:hover { background: #fafbfc; }
-
-  .legend { display: flex; gap: 14px; margin-top: 12px; font-size: 12px; color: #8a9099; flex-wrap: wrap; }
+  table.cmp .diff { font-weight: 700; color: #c084fc; }
+  .compare-foot {
+    padding: 14px 22px; display: flex; justify-content: space-between;
+    align-items: center; border-top: 1px solid var(--line); flex-wrap: wrap; gap: 12px;
+    background: rgba(255,255,255,.015);
+  }
+  .legend { display: flex; gap: 18px; font-size: 12px; color: var(--text-2); flex-wrap: wrap; }
   .legend i {
-    display: inline-block; width: 12px; height: 4px; border-radius: 2px;
-    vertical-align: middle; margin-right: 5px;
+    display: inline-block; width: 10px; height: 10px; border-radius: 3px;
+    vertical-align: middle; margin-right: 6px;
   }
-  .legend .lo i { background: #16a34a; }
-  .legend .hi i { background: #b0b4bb; }
+  .legend .lo i { background: #4ade80; }
+  .legend .hi i { background: var(--text-3); }
+  .compare-foot .note { font-size: 11px; color: var(--text-3); }
 
-  footer.mainfoot {
-    text-align: center; color: #8a9099; font-size: 12px; padding: 24px;
-    border-top: 1px solid rgba(31,35,41,.05);
+  /* Footer */
+  footer.foot {
+    text-align: center; padding: 50px 28px 36px;
+    color: var(--text-3); font-size: 12px; line-height: 1.8;
+    border-top: 1px solid var(--line); margin-top: 50px;
   }
-  footer.mainfoot b { color: #4a4f59; }
+  footer.foot code {
+    font-family: 'SF Mono', Menlo, Consolas, monospace;
+    background: rgba(255,255,255,.04); padding: 2px 7px; border-radius: 4px;
+    font-size: 11px; color: var(--text-2);
+  }
+  footer.foot .row-1 { color: var(--text-2); margin-bottom: 6px; }
 </style>
 </head>
 <body>
-  <div class="top">
-    <div class="brand">
-      <div class="mark"><span>🛍️</span></div>
-      <div>
-        <div class="name">三方比价电商 · 商城广场</div>
-        <div class="sub">MULTI-MALL DEMO · COMPARE & CHOOSE</div>
-      </div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="logo"><div class="logo-mark"></div><div class="name">商城广场 · COMPARE MALL</div></div>
+    <div class="nav-spacer"></div>
+    <div class="nav-links">
+      <a href="#persona">画像</a>
+      <a href="#malls">商城</a>
+      <a href="#compare">比价</a>
     </div>
-    <div class="top-actions">
-      <span class="badge-pill"><span class="dot"></span>3 个商城已上线</span>
-      <span class="badge-pill">⚡ 同款比价 · 一键跳转</span>
-      <span class="badge-pill">🧾 平台规则透明可见</span>
+    <span class="badge-live">3 个平台</span>
+  </div>
+</nav>
+
+<section class="hero">
+  <span class="eyebrow"><span class="dot"></span>MULTI-MALL · COMPARE & CHOOSE</span>
+  <h1>同样的商品 · 三家商城<br/><span class="grad">究竟谁更值？</span></h1>
+  <p class="lead">先 <b>30 秒</b> 创建一个用户画像，再走进三家风格迥异的电商平台 —— 看看谁的优惠规则、退换政策、配送时效最适合 <b>你假想的那个用户</b>。</p>
+</section>
+
+<!-- 用户画像入口 -->
+<section class="section" id="persona">
+  <a class="persona-banner" href="persona.html">
+    <div class="pl">
+      <span class="ribbon">✨ NEW · 智能画像生成器</span>
+      <h3>给我几个 <span class="grad-g">关键词</span><br/>我帮你写出一个<span class="grad-g">细腻的用户画像</span></h3>
+      <p class="sub">点几下标签 —— 性别、年龄、职业、消费风格、兴趣偏好…… 系统会自动衍生出 <b>消费习惯 / 决策因素 / 痛点 / 推荐商城 / 示例提问</b>。一键复制 JSON，直接拿去出题。</p>
     </div>
+    <div class="pr">
+      <span class="pgo">
+        立即创建画像
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </span>
+    </div>
+  </a>
+</section>
+
+<!-- 三个商城 -->
+<section class="section" id="malls">
+  <div class="section-head">
+    <h2>选择你的商城<span class="num-tag">3 个平台</span></h2>
+    <div class="desc">每家商城风格、优惠规则、保障力度都不同 —— 点击进入对应平台体验</div>
   </div>
 
-  <section class="hero">
-    <div>
-      <h1>同样的商品<br/>三家商城<em>谁更值</em>？</h1>
-      <p class="lead">
-        在这个比价 Demo 里，我们模拟了三个真实风格迥异的电商平台 ——
-        <b style="color:#ff4d4f">悦购</b> 综合大牌、
-        <b style="color:#0050b3">海象</b> 品质严选、
-        <b style="color:#eb2f96">闪购</b> 价格屠夫。<br/>
-        相同的几款核心商品在三个平台同时上架，<b>但价格、运费、退换政策、会员保障都不一样</b>，
-        看看你能不能找到最适合自己的那一家。
-      </p>
-      <div class="hero-stats">
-        <div class="stat-card"><div class="num">3</div><div class="lbl">购物平台</div></div>
-        <div class="stat-card"><div class="num">85+</div><div class="lbl">在售商品</div></div>
-        <div class="stat-card"><div class="num">6</div><div class="lbl">同款比价</div></div>
-        <div class="stat-card"><div class="num">3500+</div><div class="lbl">SKU 组合</div></div>
+  <div class="malls">
+    <a class="mall mall-yg" href="malls/yuegou.html">
+      <div class="top">
+        <div class="icon-box">🛍️</div>
+        <div><div class="ttl">悦购商城</div><div class="en">YUEGOU MALL</div></div>
+        <span class="ribbon-tag">★ 推荐</span>
       </div>
-    </div>
-
-    <div class="hero-art">
-      <div class="compare-box cb-yg">
-        <div class="cb-mall">YUEGOU</div>
-        <div class="cb-name">极光 X9 Pro Max</div>
-        <div class="cb-price">¥5999</div>
-        <div class="cb-tag">综合大牌 · 7天无理由</div>
+      <div class="slogan">国民购物 · 性价比之选 · 综合大牌全品类</div>
+      <div class="key-rules">
+        <span class="chip">满 99 包邮</span>
+        <span class="chip">7 天无理由</span>
+        <span class="chip">假一赔十</span>
       </div>
-      <div class="compare-box cb-hx">
-        <div class="cb-mall">HAIXIANG</div>
-        <div class="cb-name">极光 X9 Pro Max</div>
-        <div class="cb-price">¥6479</div>
-        <div class="cb-tag">PLUS 95折 · 15+30天保障</div>
+      <div class="bottom">
+        <div class="price-hint">主推<b>极光 X9 ¥5999</b></div>
+        <span class="enter">进入<span class="enter-arrow">→</span></span>
       </div>
-      <div class="compare-box cb-sg">
-        <div class="cb-mall">FLASHHUB</div>
-        <div class="cb-name">极光 X9 Pro Max</div>
-        <div class="cb-price">¥5459</div>
-        <div class="cb-tag">⚡ 限时秒杀 · 仅 3 天退</div>
+    </a>
+
+    <a class="mall mall-hx" href="malls/haixiang.html">
+      <div class="top">
+        <div class="icon-box">🌊</div>
+        <div><div class="ttl">海象优选</div><div class="en">HAIXIANG SELECT</div></div>
+        <span class="ribbon-tag">💎 品质</span>
       </div>
-      <div class="arrow">⇄</div>
-    </div>
-  </section>
+      <div class="slogan">全球严选 · 保税仓直发 · PLUS 会员制</div>
+      <div class="key-rules">
+        <span class="chip">满 199 免邮</span>
+        <span class="chip">15+30 天保障</span>
+        <span class="chip">假一赔十万</span>
+      </div>
+      <div class="bottom">
+        <div class="price-hint">主推<b>波尔多红酒 ¥1299</b></div>
+        <span class="enter">进入<span class="enter-arrow">→</span></span>
+      </div>
+    </a>
 
-  <section class="malls">
-    <div class="section-title">
-      <div class="t">🏬 选择你的商城<small>· 点击进入对应平台</small></div>
-      <div class="hint">每家商城有自己的优惠规则、退换政策与配送时效</div>
-    </div>
-    <div class="mall-grid">
-      <!-- 悦购 -->
-      <a class="mall mall-yg" href="malls/yuegou.html">
-        <div class="cover">
-          <div class="icon-big">🛍️</div>
-          <span class="ribbon">★ 推荐 · 综合大牌</span>
-          <h2>悦购商城</h2>
-          <div class="en">YUEGOU MALL</div>
-          <div class="slogan">国民购物 · 性价比之选 · 9 大品类全覆盖</div>
-        </div>
-        <div class="body">
-          <div class="feat"><span>27 款商品</span><span>1300+ SKU</span><span>橙卡 88 折</span></div>
-          <div class="rule-mini">
-            <div class="rule"><span class="ic">💰</span><div>满 <b>300 / 600 / 1000</b> 元 · 立减 <b>30 / 80 / 150</b></div></div>
-            <div class="rule"><span class="ic">🚚</span><div>满 <b>99</b> 元包邮 · 否则 10 元/单</div></div>
-            <div class="rule"><span class="ic">↩️</span><div><b>7 天无理由</b> + 30 天价保 · 假一赔十</div></div>
-          </div>
-        </div>
-        <div class="footer-bar">
-          <div class="meta-left">主推：<b>极光 X9 Pro Max ¥5999</b></div>
-          <span class="enter-btn">进入商城 →</span>
-        </div>
-      </a>
+    <a class="mall mall-sg" href="malls/shangou.html">
+      <div class="top">
+        <div class="icon-box">⚡</div>
+        <div><div class="ttl">闪购天地</div><div class="en">FLASHHUB</div></div>
+        <span class="ribbon-tag">🔥 限时</span>
+      </div>
+      <div class="slogan">限时秒杀 · 网红爆款 · 价格屠夫</div>
+      <div class="key-rules">
+        <span class="chip">满 69 包邮</span>
+        <span class="chip">仅 3 天退</span>
+        <span class="chip">9 折破价</span>
+      </div>
+      <div class="bottom">
+        <div class="price-hint">主推<b>10 片面膜 ¥19</b></div>
+        <span class="enter">进入<span class="enter-arrow">→</span></span>
+      </div>
+    </a>
+  </div>
+</section>
 
-      <!-- 海象 -->
-      <a class="mall mall-hx" href="malls/haixiang.html">
-        <div class="cover">
-          <div class="icon-big">🌊</div>
-          <span class="ribbon">💎 品质 · 会员制</span>
-          <h2>海象优选</h2>
-          <div class="en">HAIXIANG SELECT</div>
-          <div class="slogan">全球严选 · 保税仓直发 · 品质优先</div>
-        </div>
-        <div class="body">
-          <div class="feat"><span>32 款 · 5 款独家</span><span>波尔多/M9/海蓝</span><span>PLUS 95 折</span></div>
-          <div class="rule-mini">
-            <div class="rule"><span class="ic">💰</span><div>满 <b>500 / 1500</b> 元 · 立减 <b>50 / 200</b></div></div>
-            <div class="rule"><span class="ic">🚚</span><div>满 <b>199</b> 元免邮 · 跨境冷链 +20</div></div>
-            <div class="rule"><span class="ic">🛡️</span><div><b>15 天无理由 + 30 天质保</b> · 假一赔十万</div></div>
-          </div>
-        </div>
-        <div class="footer-bar">
-          <div class="meta-left">主推：<b>波尔多 AOC 红酒 ¥1299</b></div>
-          <span class="enter-btn">进入商城 →</span>
-        </div>
-      </a>
-
-      <!-- 闪购 -->
-      <a class="mall mall-sg" href="malls/shangou.html">
-        <div class="cover">
-          <div class="icon-big">⚡</div>
-          <span class="ribbon">🔥 价格屠夫 · 限时</span>
-          <h2>闪购天地</h2>
-          <div class="en">FLASHHUB</div>
-          <div class="slogan">限时秒杀 · 网红爆款 · 9 折破价</div>
-        </div>
-        <div class="body">
-          <div class="feat"><span>32 款 · 5 款独家</span><span>9.9 元面膜</span><span>每日整点抢券</span></div>
-          <div class="rule-mini">
-            <div class="rule"><span class="ic">💰</span><div>满 <b>99 / 199 / 399</b> · 立减 <b>15 / 35 / 80</b></div></div>
-            <div class="rule"><span class="ic">🚚</span><div>满 <b>69</b> 元包邮 · 否则 8 元/单</div></div>
-            <div class="rule"><span class="ic">⚠️</span><div><b>仅 3 天</b>无理由 · 秒杀区不退不换</div></div>
-          </div>
-        </div>
-        <div class="footer-bar">
-          <div class="meta-left">主推：<b>10 片面膜 ¥19</b></div>
-          <span class="enter-btn">进入商城 →</span>
-        </div>
-      </a>
-    </div>
-  </section>
-
-  <section class="compare-section">
-    <div class="section-title">
-      <div class="t">⚖️ 同款 6 件商品 · 三家比价<small>· 绿色为最低价 / 灰色划线为最高价</small></div>
-      <div class="hint">同一件商品三家都能买到 · 价格差异源自服务保障的差别</div>
-    </div>
-    <div class="table-wrap">
-      <table class="compare">
+<!-- 比价 -->
+<section class="section" id="compare">
+  <div class="section-head">
+    <h2>同款 · 一眼比价<span class="num-tag">6 件</span></h2>
+    <div class="desc">同一件商品三家都能买到，差价源自服务保障的差别</div>
+  </div>
+  <div class="compare-card">
+    <div class="table-scroll">
+      <table class="cmp">
         <thead>
           <tr>
-            <th style="text-align:left;padding-left:22px">商品</th>
-            <th class="h-yg">🛍️ 悦购商城<br/><small style="font-weight:400;font-size:11px;opacity:.7">综合大牌</small></th>
-            <th class="h-hx">🌊 海象优选<br/><small style="font-weight:400;font-size:11px;opacity:.7">PLUS · 品质严选</small></th>
-            <th class="h-sg">⚡ 闪购天地<br/><small style="font-weight:400;font-size:11px;opacity:.7">9 折秒杀</small></th>
+            <th style="text-align:left;padding-left:24px">商品</th>
+            <th class="th-yg">🛍️ 悦购<span class="sub">综合大牌</span></th>
+            <th class="th-hx">🌊 海象<span class="sub">PLUS 严选</span></th>
+            <th class="th-sg">⚡ 闪购<span class="sub">9 折秒杀</span></th>
             <th>差价</th>
           </tr>
         </thead>
-        <tbody id="compareTbody"></tbody>
+        <tbody id="cmpBody"></tbody>
       </table>
     </div>
-    <div class="legend">
-      <span class="lo"><i></i>最低价（推荐入手）</span>
-      <span class="hi"><i></i>最高价（划线对照）</span>
-      <span style="margin-left:auto;color:#b0b4bb">* 同款指共享商品 ID，三家商城价格自动同步联动</span>
+    <div class="compare-foot">
+      <div class="legend">
+        <span class="lo"><i></i>最低价</span>
+        <span class="hi"><i></i>最高价</span>
+      </div>
+      <div class="note">* 同款指共享商品 ID · 三家平台价格自动联动</div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <footer class="mainfoot">
-    <b>三方比价电商 Demo</b> · 一级广场 + 三个独立商城 · 全部纯前端 · CSS / JS 内联在各自 HTML · 适合演示拖拽 / 录屏 / 截图<br/>
-    📁 文件结构：<code>index.html</code> · <code>malls/yuegou.html</code> · <code>malls/haixiang.html</code> · <code>malls/shangou.html</code>
-  </footer>
+<footer class="foot">
+  <div class="row-1"><b style="color:var(--text)">三方比价电商 Demo</b> · 一级广场 + 三个独立商城 + 用户画像生成器 · 全部纯前端</div>
+  <div>
+    <code>index.html</code>
+    <code>persona.html</code>
+    <code>malls/yuegou.html</code>
+    <code>malls/haixiang.html</code>
+    <code>malls/shangou.html</code>
+  </div>
+</footer>
 
 <script>
-/* 同款比价数据：6 件商品在三家平台的价格（以悦购为基准计算） */
 const COMPARE_ITEMS = [
-  { emo: "📱", name: "极光 X9 Pro Max 5G 手机",  base: 5999 },
-  { emo: "🎧", name: "声海 Pro2 真无线降噪耳机", base: 799  },
-  { emo: "👟", name: "FlyRun 透气缓震运动跑鞋",  base: 399  },
-  { emo: "👕", name: "纯棉简约百搭基础款 T 恤",  base: 79   },
-  { emo: "☕", name: "豆光 全球精品手冲咖啡豆",  base: 78   },
-  { emo: "🧱", name: "BlockJoy 益智拼装积木",    base: 99   },
+  { emo: "📱", name: "极光 X9 Pro Max 5G",       desc: "5G 旗舰智能手机",      base: 5999 },
+  { emo: "🎧", name: "声海 Pro2 真无线耳机",     desc: "50dB 主动降噪",        base: 799  },
+  { emo: "👟", name: "FlyRun 缓震运动跑鞋",      desc: "氮气中底 透气飞织",    base: 399  },
+  { emo: "👕", name: "新疆纯棉基础款 T 恤",      desc: "180g 长绒棉 10 色",    base: 79   },
+  { emo: "☕", name: "豆光 全球精品咖啡豆",      desc: "SOE 单品 当周烘焙",    base: 78   },
+  { emo: "🧱", name: "BlockJoy 益智拼装积木",    desc: "5 大主题 ABS 环保",    base: 99   },
 ];
-const tbody = document.getElementById("compareTbody");
+const tbody = document.getElementById("cmpBody");
 COMPARE_ITEMS.forEach(item => {
-  const yg = item.base;
-  const hx = Math.round(item.base * 1.08);
-  const sg = Math.round(item.base * 0.91);
-  const arr = [["yg",yg],["hx",hx],["sg",sg]];
-  const min = Math.min(yg,hx,sg);
-  const max = Math.max(yg,hx,sg);
-  const cells = arr.map(([k,v]) => {
-    const cls = v===min ? "lowest" : (v===max ? "highest" : "");
-    return `<td class="price ${cls}">¥${v}</td>`;
-  }).join("");
+  const yg = item.base, hx = Math.round(item.base * 1.08), sg = Math.round(item.base * 0.91);
+  const arr = [yg, hx, sg];
+  const min = Math.min(...arr), max = Math.max(...arr);
+  const mark = (v) => {
+    if (v === min) return `<td class="price lowest">¥${v}<span class="price-tag">最低</span></td>`;
+    if (v === max) return `<td class="price highest">¥${v}</td>`;
+    return `<td class="price">¥${v}</td>`;
+  };
   tbody.insertAdjacentHTML("beforeend", `
     <tr>
-      <td class="product-cell"><span class="emo">${item.emo}</span><span>${item.name}</span></td>
-      ${cells}
-      <td style="font-weight:700;color:#722ed1">¥${max - min}</td>
+      <td>
+        <div class="product-cell">
+          <span class="emo">${item.emo}</span>
+          <div>
+            <div class="pname">${item.name}</div>
+            <div class="pdesc">${item.desc}</div>
+          </div>
+        </div>
+      </td>
+      ${mark(yg)}${mark(hx)}${mark(sg)}
+      <td class="diff">¥${max - min}</td>
     </tr>
   `);
 });
 </script>
+
 </body>
 </html>
