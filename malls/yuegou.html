@@ -28,9 +28,6 @@
     display: inline-flex; align-items: center; gap: 4px;
     color: #fff; font-weight: 700;
   }
-  .platform-nav .pn-spacer { flex: 1; }
-  .platform-nav .switch-mall { display: inline-flex; gap: 10px; align-items: center; }
-  .platform-nav .switch-mall .lbl { color: rgba(255,255,255,.75); }
   /* 顶栏 */
   header {
     background: #fff; box-shadow: 0 1px 0 #ececf0;
@@ -143,6 +140,54 @@
   .pprice .now { color: #ff4d4f; font-weight: 800; font-size: 18px; }
   .pprice .now small { font-size: 12px; }
   .pprice .old { color: #b0b4bb; text-decoration: line-through; font-size: 12px; }
+  .pshop-row {
+    display: flex; align-items: center; gap: 6px;
+    margin: 4px 0 2px 0; min-width: 0;
+  }
+  .pshop {
+    font-size: 11.5px;
+    color: #d46b08;
+    background: #fff7e6;
+    border: 1px solid #ffe7ba;
+    padding: 2px 6px;
+    border-radius: 4px;
+    flex: 1 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .pshop-row .vip88 { flex-shrink: 0; }
+  /* 88VIP 徽标 - 三种状态（黑金风，与悦购橙红主色解耦） */
+  .vip88 {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+    line-height: 1.4;
+    letter-spacing: 0.3px;
+    vertical-align: middle;
+  }
+  .vip88.ok {
+    background: linear-gradient(135deg, #1f1f1f 0%, #383838 100%);
+    color: #d4af37;
+    border: 1px solid #b8902f;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+    text-shadow: 0 0 1px rgba(212,175,55,0.3);
+  }
+  .vip88.product-excluded {
+    background: #fafafa;
+    color: #8c8c8c;
+    border: 1px dashed #d9d9d9;
+  }
+  .vip88.shop-excluded {
+    background: #f5f0eb;
+    color: #8b6914;
+    border: 1px dashed #d4b896;
+  }
+  /* 详情页里更大的版本 */
+  .m-shop .vip88 { font-size: 11.5px; padding: 3px 9px; }
   .pprice .range { color: #8a9099; font-weight: 400; font-size: 12px; }
 
   /* 详情弹窗 */
@@ -166,6 +211,26 @@
   .m-close:hover { color: #1f2329; }
   .m-name { font-size: 21px; font-weight: 700; margin-bottom: 6px; line-height: 1.35; }
   .m-brand { font-size: 13px; color: #8a9099; margin-bottom: 8px; }
+  .m-shop {
+    display: block;
+    background: linear-gradient(135deg, #fff7e6 0%, #fffaf2 100%);
+    border: 1px solid #ffd591;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin: 6px 0 12px 0;
+    font-size: 12.5px;
+    color: #d46b08;
+    line-height: 1.6;
+  }
+  .m-shop .shop-line {
+    display: flex; align-items: center; gap: 8px;
+    flex-wrap: wrap; margin-bottom: 4px;
+  }
+  .m-shop .shop-name { font-weight: 600; color: #ad4e00; }
+  .m-shop .shop-promo {
+    display: block; color: #595959; font-size: 12px;
+    padding-top: 4px; border-top: 1px dashed #ffd591;
+  }
   .m-meta { display: flex; gap: 14px; font-size: 12px; color: #8a9099; margin-bottom: 14px; align-items: center; }
   .m-meta .rating { color: #ffa726; font-weight: 700; }
   .m-price {
@@ -382,12 +447,6 @@
       <a class="home-link" href="../index.html">⬅ 商城广场</a>
       <span style="opacity:.5">/</span>
       <span>悦购商城 · 综合大牌</span>
-      <span class="pn-spacer"></span>
-      <span class="switch-mall">
-        <span class="lbl">同款比价 →</span>
-        <a href="haixiang.html">🌊 海象优选</a>
-        <a href="shangou.html">⚡ 闪购天地</a>
-      </span>
     </div>
   </div>
 
@@ -456,8 +515,31 @@
         <div class="slogan">综合大牌 · 国民购物 · 性价比之选</div>
       </div>
       <div class="rule-body">
+        <!-- 1️⃣ 店铺优惠 -->
         <div class="rule-section">
-          <h3><span class="ic">💰</span>满减优惠（多档自动取最高档，不阶梯叠加）</h3>
+          <h3><span class="ic">🏪</span>1. 店铺优惠</h3>
+          <ul class="rule-list">
+            <li><b>店铺概念</b>：商城内的每个商品均隶属于某个具体店铺，店铺名一般为「<b>品牌名 + "官方旗舰店"/"专营店"/"专卖店"</b>」。一个订单中如包含多个店铺商品，店铺优惠按各自店铺单独结算。</li>
+            <li><b>4 种通用店铺优惠形式</b>（不同店铺组合不同，详情页 / 商品标签处会标注）：
+              <ul style="margin-top:4px;">
+                <li><b>① 关注礼</b>：关注该店铺立减 ¥3 ~ ¥10（同店每月限 1 次）</li>
+                <li><b>② 店铺会员价</b>：免费成为店铺会员（部分高端品牌需付费 ¥30/年），可享 95 折 / 88 折等店铺专享价</li>
+                <li><b>③ 店铺满减</b>：店内商品累计满 X 减 Y（仅本店内商品累计触发，跨店不通用）</li>
+                <li><b>④ 店铺组合优惠</b>：「买 2 件 9 折」/「买 3 件第 3 件半价」/「满 199 送 5ml 小样」等</li>
+              </ul>
+            </li>
+          </ul>
+
+          <ul class="rule-list">
+            <li><b>店铺优惠互斥</b>：同店"店铺会员价"与"店铺组合优惠"二选一（取省更多者）；"关注礼"可与上述任一叠加。</li>
+            <li><b>店铺满减不跨店</b>：A 店满 500 仅看 A 店内商品累计金额，与 B 店商品无关。</li>
+            <li><b>查询本店优惠</b>：进入商品详情页可查看该店铺的具体优惠组合。</li>
+          </ul>
+        </div>
+
+        <!-- 2️⃣ 平台优惠 -->
+        <div class="rule-section">
+          <h3><span class="ic">💰</span>2. 平台优惠（跨店满减，多档取最高）</h3>
           <div class="rule-grid">
             <div class="rule-card"><div class="rc-t">满 200 元</div><div class="rc-v">立减 15 元</div></div>
             <div class="rule-card"><div class="rc-t">满 400 元</div><div class="rc-v">立减 40 元</div></div>
@@ -466,53 +548,143 @@
             <div class="rule-card"><div class="rc-t">满 3000 元</div><div class="rc-v">立减 450 元</div></div>
           </div>
           <ul class="rule-list" style="margin-top:10px;">
-            <li>满减按 <b>订单实付前金额</b> 计算，仅取 <b>最高档</b>（不叠加，例：满 1500 已含满 800/400/200 的优惠）</li>
-            <li>限时秒杀商品、闪购爆品、品牌定金商品 <b>不参与满减</b>（页面有"不参加满减"标识）</li>
-            <li>多个商品付款时按订单总额触发，单件商品价值低于 100 元的"凑单品"满减后按"摊销比例"分摊</li>
+            <li><b>触发金额</b> = 「订单内 <i>参与品类</i> 的所有商品（在已扣店铺优惠后）合计金额」</li>
+            <li><b>取最高档</b>，不阶梯叠加（例：触发额 1600 元 → 命中"满 1500 减 200"，不再额外触发 800/400/200）</li>
+            <li><b style="color:#d4380d">不参与平台优惠的品类</b>：📱 手机数码 / 💻 电脑办公 / 🏠 家用电器（这三大类商品 <b>不计入</b>触发金额、也 <b>不享受</b> 平台优惠 → 由"平台加补券"补偿，详见模块 4）</li>
+            <li><b>计算示例</b>：购物车 = iPhone ¥6000（数码 / 不参与） + 西装 ¥899 + 衬衫 ¥199。
+              <ul style="margin-top:4px;">
+                <li>触发额 = 899 + 199 = 1098 元 → 命中"满 800 减 100"</li>
+                <li>订单合计 = 6000 + (1098 - 100) = ¥6998</li>
+              </ul>
+            </li>
           </ul>
         </div>
 
+        <!-- 3️⃣ 88VIP 专享 -->
         <div class="rule-section">
-          <h3><span class="ic">🎟️</span>优惠券体系（叠加规则严格）</h3>
+          <h3><span class="ic">👑</span>3. 88VIP 专享 9.5 折（年费 ¥88）</h3>
           <ul class="rule-list">
-            <li><b>品类券</b>（每月 1 号、15 号 0 点发放）：服饰满 300-30 / 数码满 1000-80 / 家电满 2000-150 / 食品满 100-10</li>
-            <li><b>平台券</b>（会员日 18 号抢）：30/300、50/500、100/800、200/1500（每用户每月限领 2 张）</li>
-            <li><b>店铺折扣</b>：自营店铺商品页可见"店铺折扣 95 折"或"店铺满 199-20"</li>
-            <li><b>叠加顺序（务必按此顺序计算）</b>：店铺折扣 → 跨店满减 → 品类券（限 1 张） → 平台券（限 1 张） → 会员折扣 → 积分抵扣</li>
-            <li>橙卡会员的 95 折 <b>仅限非促销价</b> 触发，秒杀商品的折扣不再叠加</li>
-            <li>同一笔订单，平台券与品类券可叠加，但二者不可同时与"店铺满减"同时使用</li>
+            <li><b>开通条件</b>：年费 ¥88 直接开通；或淘气值 ≥ 1000 分（综合活跃度）当年度免费续费。</li>
+            <li><b>核心权益</b>：<b>全场指定商品额外 9.5 折</b>。商品页/商品列表会在店铺信息栏显示 88VIP 状态徽标：
+              <ul style="margin-top:4px;">
+                <li><span class="vip88 ok">👑 88VIP 9.5 折</span> — 该商品参与 88VIP，可享 9.5 折</li>
+                <li><span class="vip88 product-excluded">本商品不参与 88VIP</span> — 店铺整体参与，但本商品因品牌方/进口政策限制不参与（典型如：联名限定款、跨境进口品）</li>
+                <li><span class="vip88 shop-excluded">店铺不参与 88VIP</span> — 整店因跨境/特殊渠道不参与（如「豆光全球咖啡馆」）</li>
+              </ul>
+            </li>
+            <li><b>叠加位置</b>：9.5 折 <b>叠加于"店铺优惠 + 平台优惠"之后</b>（基数 = 已扣店铺优惠 + 平台优惠后的金额）</li>
+            <li><b>不参与场景</b>：① 限时秒杀价 ② 已使用"平台加补券"的商品（与加补券二选一） ③ 商品页明示"不参与"的商品/店铺</li>
           </ul>
-        </div>
 
-        <div class="rule-section">
-          <h3><span class="ic">⭐</span>会员体系 & 积分</h3>
+          <h4 style="margin:14px 0 8px 0;font-size:14px;">🎟️ 88VIP 每月专属券礼包（开通后自动到账，30 天有效，过期不补）</h4>
           <ul class="rule-list">
-            <li><b>注册会员</b>（免费）：每月 1 张 30/300 券；新人首单立减 30 元（限首次下单且金额 ≥ 99）</li>
-            <li><b>橙卡会员</b>（88 元/年）：全场 95 折 + 每月 5 张满减券 + 生日月双倍积分 + 上门退货免首次运费</li>
-            <li><b>至尊会员</b>（388 元/年）：全场 88 折 + 每月 10 张券 + 优先发货（4h 内）+ 上门退货全免运费 + 终身价保</li>
-            <li><b>积分体系</b>：1 元实付 = 1 积分；100 积分 = 1 元抵扣；单笔订单积分抵扣上限为订单价的 <b>5%</b></li>
-            <li><b>会员日</b>（每月 18 日）：积分双倍；0 时-2 时下单积分三倍</li>
+            <li><b>面值组合</b>（每月 1 号 0 点统一发放）：
+              <ul style="margin-top:4px;">
+                <li>5 张「<b>满 1000 减 200</b>」无门槛通用券</li>
+                <li>5 张「<b>满 800 减 150</b>」通用券</li>
+                <li>5 张「<b>满 500 减 100</b>」通用券</li>
+              </ul>
+            </li>
+            <li><b>使用规则</b>：
+              <ul style="margin-top:4px;">
+                <li>单笔订单 <b>最多使用 1 张</b>（不同档位不可同单叠加，按订单金额自动匹配可用档）</li>
+                <li>✅ <b>可与 88VIP 9.5 折叠加</b>（先扣 9.5 折，再用月度券抵扣，门槛按 9.5 折后金额判断）</li>
+                <li>❌ <b>不与红包同享</b></li>
+                <li>❌ <b>不与平台加补券同享</b></li>
+              </ul>
+            </li>
+          </ul>
+
+          <h4 style="margin:14px 0 8px 0;font-size:14px;">🎯 88VIP 其他权益</h4>
+          <ul class="rule-list">
+            <li><b>积分基数翻倍</b>：会员日（每月 18 日）下单 88VIP 享 <b>1 元实付 = 2 积分</b>；非 88VIP 仅 1 倍。</li>
+            <li><b>专属服务</b>：① 7×24 优先客服 ② 上门退货免运费（每年不限次） ③ 价保期延长至 60 天（普通用户 30 天）</li>
+            <li><b>9.5 折互斥规则</b>：88VIP 9.5 折 与「平台加补券」<b>二选一</b>（结算时会自动比对省更多的方案）；与「月度专属券」<b>可叠加</b>。</li>
           </ul>
         </div>
 
+        <!-- 4️⃣ 平台加补券 -->
         <div class="rule-section">
-          <h3><span class="ic">🚚</span>运费 & 保险</h3>
+          <h3><span class="ic">🎁</span>4. 平台加补券（针对三大类不参与平台优惠的补偿机制）</h3>
+          <ul class="rule-list">
+            <li><b>背景</b>：因 📱 手机数码 / 💻 电脑办公 / 🏠 家用电器 三大类不参与平台跨店满减，平台联合品牌方 + 政府国补，推出「<b>加补券</b>」作为补偿。</li>
+            <li><b>📱 数码加补券</b>（限手机 / 平板 / 智能手表 / 蓝牙耳机 / 相机）：
+              <ul style="margin-top:4px;">
+                <li>手机单价 ≤ ¥6000：享 <b>12% 加补</b>（封顶 ¥500）</li>
+                <li>手机单价 ¥6001-12000：享 <b>10% 加补</b>（封顶 ¥800）</li>
+                <li>其他数码：享 <b>8% 加补</b>（封顶 ¥300）</li>
+                <li>资格：身份证实名认证 + 一年限领 1 次（数码加补共用配额）</li>
+              </ul>
+            </li>
+            <li><b>🏠 家电加补券</b>（限大件白电 / 黑电 / 厨电）：
+              <ul style="margin-top:4px;">
+                <li>一级能效：享 <b>10% 加补</b>（封顶 ¥1500，含国家补贴 5% + 平台加补 5%）</li>
+                <li>二级能效：享 <b>8% 加补</b>（封顶 ¥800）</li>
+                <li>三级及以下能效：享 <b>5% 加补</b>（封顶 ¥400）</li>
+                <li>资格：需提供能效标识照片审核（24h 内反馈）；一年限领 2 次</li>
+              </ul>
+            </li>
+            <li><b>💻 电脑办公加补券</b>（限笔记本 / 台式机 / 显示器 / 键盘 / 路由器）：
+              <ul style="margin-top:4px;">
+                <li>笔记本 / 台式机：享 <b>8% 加补</b>（封顶 ¥500）</li>
+                <li>显示器：享 <b>10% 加补</b>（封顶 ¥300）</li>
+                <li>外设（键盘 / 鼠标）：享 <b>5% 加补</b>（封顶 ¥80）</li>
+                <li>资格：教育优惠（学生 / 教师认证）可叠加额外 5% 折扣（与本加补券叠加上限 20%）</li>
+              </ul>
+            </li>
+            <li><b>叠加规则</b>：
+              <ul style="margin-top:4px;">
+                <li>✅ 加补券 <b>可与店铺优惠叠加</b>（店铺优惠先算，加补按"店铺优惠后金额"计算百分比）</li>
+                <li>❌ 加补券 <b>与 88VIP 9.5 折二选一</b>（系统自动选省更多者）</li>
+                <li>❌ 加补券 <b>不与 88VIP 月度专属券同享</b>（一旦选择加补券，本订单不可再使用月度券）</li>
+                <li>❌ 加补券 <b>与红包不同享</b>（红包仅作用于其他品类商品）</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 5️⃣ 红包 -->
+        <div class="rule-section">
+          <h3><span class="ic">🧧</span>5. 红包（最后一步抵扣，单笔限 1 个）</h3>
+          <ul class="rule-list">
+            <li><b>红包来源</b>：
+              <ul style="margin-top:4px;">
+                <li><b>① 新人红包</b>：注册立得 ¥30，首单订单金额 ≥ ¥100 可用（30 天有效）</li>
+                <li><b>② 签到红包</b>：每日签到随机 ¥1 ~ ¥10；连续 7 日额外 ¥10；连续 30 日额外 ¥50</li>
+                <li><b>③ 邀请红包</b>：邀请新人注册并完成首单，邀请方得 ¥20 / 受邀方得 ¥20（限新户首单）</li>
+                <li><b>④ 节日红包雨</b>：6.18 / 双 11 / 年货节 / 38 节当天 9:00 / 12:00 / 18:00 / 21:00 限时抢，无门槛 ¥5 ~ ¥50 随机</li>
+                <li><b>⑤ 晒单红包</b>：好评 + 配图晒单后 7 日内到账 ¥5（每月最多 5 单）</li>
+                <li><b>⑥ 客服补偿红包</b>：投诉 / 售后场景由客服发放（不固定）</li>
+              </ul>
+            </li>
+            <li><b>使用规则</b>：
+              <ul style="margin-top:4px;">
+                <li>单笔订单 <b>最多使用 1 个红包</b>（系统按金额最大者优先建议使用）</li>
+                <li><b>互斥</b>：① 红包 与 88VIP 月度专属券 不同享 ② 红包 与 加补券（数码 / 家电 / 电脑办公） 不同享 ③ 邀请红包 不可与"店铺新人首单立减"叠加</li>
+                <li><b>有效期</b>：从领取日起 30 天，过期作废，余额不退</li>
+                <li><b>退货时</b>：若订单使用红包，退货后红包按"退货件数 / 总件数"比例退回到红包账户（剩余有效期保留）</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+
+        <div class="rule-section">
+          <h3><span class="ic">🚚</span>运费</h3>
           <ul class="rule-list">
             <li><b>普通快递</b>：满 99 元免运费；未满收取 <b>10 元/单</b> 标准快递（中通/圆通）</li>
             <li><b>大件家电</b>（≥ 20kg）：基础运费 15 元 + 阶梯加价：30-50kg +20、50-80kg +50、80kg 以上 +80</li>
-            <li><b>偏远地区</b>（新疆/西藏/内蒙古/青海）：附加 +15~30 元/单（系统自动识别地址加收）</li>
-            <li><b>运费保险</b>：1 元/单选购，理赔上限 <b>50 元</b>，超出消费者承担</li>
-            <li><b>保价服务</b>：商品价 ≥ 2000 元建议购买，费率 <b>0.5%</b>（封顶 200 元/单）；丢失/损毁按"保价金额"全额理赔</li>
+            <li><b>偏远地区</b>（新疆/西藏/内蒙古/青海）：附加 +30 元/单（系统自动识别地址加收）</li>
           </ul>
         </div>
 
         <div class="rule-section">
-          <h3><span class="ic">🛡️</span>价保规则（30 天，复杂条件）</h3>
+          <h3><span class="ic">🛡️</span>价保规则（30 天）</h3>
           <ul class="rule-list">
-            <li>普通会员 <b>30 天价保</b>，至尊会员 <b>终身价保</b>（限自营商品）</li>
+            <li>普通用户 <b>30 天价保</b>，<b>88VIP 享 60 天价保</b>（限自营商品）</li>
             <li>申请条件：商品下单后 30 天内 <b>页面定价</b>（非秒杀/不含券价）下降，可申请退差价</li>
-            <li><b>不支持价保的场景</b>：① 限时秒杀触发价 ② 跨店满减实付价 ③ 优惠券（含店铺/平台/品类券）实付价 ④ 6.18/双11/年货节大促价</li>
-            <li>价保差额计算：<b>差额 = 原页面定价 - 当前页面定价</b>（不考虑历史促销叠加）</li>
+            <li><b>不支持价保的场景</b>：① 限时秒杀触发价 ② 平台优惠（跨店满减）实付价 ③ 88VIP 9.5 折后实付价 ④ 平台加补券抵扣后实付价 ⑤ 红包抵扣后实付价 ⑥ 6.18/双11/年货节大促价</li>
+            <li>价保差额计算：<b>差额 = 原页面定价 - 当前页面定价</b>（不考虑历史促销叠加，仅看商品页明示的"售价"字段）</li>
             <li>价保到账：原路退回，T+1 工作日；积分抵扣部分按比例退回积分</li>
           </ul>
         </div>
@@ -522,19 +694,15 @@
           <ul class="rule-list">
             <li><b>7 天无理由</b>退换：从签收次日 0 时起 7×24 = 168 小时内可申请；商品需"不影响二次销售"（吊牌完整、配件齐全）</li>
             <li><b>大件家电退货</b>：上门取件 <b>30 元/单</b>（消费者承担）+ 安装拆除费 <b>80 元/单</b>（如已安装）</li>
-            <li><b>已使用未拆封</b>：按"折旧 <b>5%/天</b>"扣除，最高扣 30%；如使用 7 天后退货扣 30% 商品款</li>
-            <li><b>已拆封并使用</b>：扣 <b>原价 10% 服务费 + 实际折旧</b>（按品类不同 5%-20%）</li>
             <li><b>食品生鲜</b>：未拆封 24 小时内可退；已拆封不退；<b>坏果烂果坏一赔三</b>（到货 24h 内拍照反馈）</li>
             <li><b>退款金额公式</b>：<code>退款 = 实付金额 × (退货件数/总件数) - 已享受满减摊销 - 折旧扣款 - 上门取件费</code></li>
-            <li><b>满减反算</b>：若退货后订单跌破满减门槛，已享受的满减额按"被退商品占比"扣回（即不退还满减部分）</li>
-            <li><b>积分回收</b>：退货后已发放的积分按"退款金额 ÷ 实付"比例扣回</li>
           </ul>
         </div>
 
         <div class="rule-section">
           <h3><span class="ic">📦</span>发货 & 配送</h3>
           <ul class="rule-list">
-            <li>现货商品 <b>48 小时内发货</b>，至尊会员 <b>4 小时优先发货</b>，节假日不打烊</li>
+            <li>现货商品 <b>48 小时内发货</b>，<b>88VIP 享 4 小时优先发货</b>，节假日不打烊</li>
             <li>合作物流：顺丰、京东、中通、圆通自动分配最优路线</li>
             <li>支持 <b>送货上门 / 自提柜 / 驿站代收</b>，未签收 7 日自动确认</li>
           </ul>
@@ -1211,8 +1379,8 @@ const PRODUCT_DEFS = [
   /* ========== 👗 穿搭灵感套餐 ========== */
   {
     id: "outfit-business", cat: "outfit", emoji: "🧥",
-    name: "商务通勤穿搭五件套 一站搞定", brand: "盛意 × Berlin 联名",
-    tags: ["套餐打包", "造型师推荐", "商务面试"], rating: 4.8, sales: 2890,
+    name: "商务通勤穿搭五件套 一站搞定", brand: "盛意 × Berlin 联名", vip88Excluded: true,
+    tags: ["套餐打包", "造型师推荐", "商务面试", "联名限定"], rating: 4.8, sales: 2890,
     desc: "<h4>一套搞定面试 / 商务 / 婚礼</h4><ul><li>造型师推荐：西装上衣 + 西裤 + 衬衫 + 商务皮鞋 + 真皮腰带</li><li>整套色彩协调，不会出错</li><li>套餐价比单买便宜约 18%（参考单买价 2380 元）</li><li>送领带 + 袖扣 + 西装防尘袋</li></ul>",
     params: { "包含": "西装+西裤+衬衫+皮鞋+腰带", "造型师": "1V1 搭配建议 (微信沟通)", "套餐折扣": "比单买便宜 18%", "尺码": "上衣/裤子/鞋分开匹配", "赠品": "领带+袖扣+西装防尘袋" },
     specs: [
@@ -1302,8 +1470,8 @@ const PRODUCT_DEFS = [
   },
   {
     id: "gift-business", cat: "gift", emoji: "🍷",
-    name: "商务送礼 高端红酒 + 醒酒器礼盒", brand: "心选",
-    tags: ["商务送礼", "高端礼盒", "上门送礼"], rating: 4.8, sales: 3120,
+    name: "商务送礼 高端红酒 + 醒酒器礼盒", brand: "心选", vip88Excluded: true,
+    tags: ["商务送礼", "高端礼盒", "上门送礼", "进口跨境"], rating: 4.8, sales: 3120,
     desc: "<h4>商务必备好礼</h4><ul><li>法国波尔多 AOC 干红 750ml × 2 瓶</li><li>水晶醒酒器 1.2L + 不锈钢开瓶器</li><li>送礼袋 + 烫金贺卡</li><li>支持指定地址、指定时段送达</li></ul>",
     params: { "包含": "红酒+醒酒器+开瓶器+礼袋+贺卡", "酒精度": "13.5% vol", "包装": "黑金礼盒", "送达": "支持指定时段送达 (+50 上门送礼服务)" },
     specs: [
@@ -1375,12 +1543,72 @@ document.addEventListener("click", e => {
   }
 });
 
-/* ----------------- 商品卡片 ----------------- */
-function discountText(p) {
-  if (!p.original || p.original <= p.minPrice) return "";
-  const off = Math.round((1 - p.minPrice / p.original) * 10);
-  return `直降¥${p.original - p.minPrice}`;
+/* ----------------- 店铺映射（与平台规则面板对应） ----------------- */
+const SHOP_BRAND_MAP = {
+  "极光科技": "极光科技官方旗舰店",
+  "白浪": "白浪家电官方旗舰店",
+  "智屏": "白浪家电官方旗舰店",
+  "冷风家": "冷风家空调专营店",
+  "云宝": "云宝智能家居",
+  "SoundOcean": "声海音频专卖店",
+  "Polar": "Polar 智能手表官方店",
+  "VisionX": "VisionX 影像专营店",
+  "Mirror": "锐影 Mirror 笔记本旗舰店",
+  "KeyArt": "KeyArt 客制化键盘专营",
+  "ProView": "ProView 显示器专营",
+  "盛意": "盛意男装专营店",
+  "盛意 × Berlin 联名": "盛意男装专营店",
+  "雪境": "雪境羽绒服旗舰店",
+  "U Basic": "U Basic 基础款服饰店",
+  "栀色": "栀色女装专营",
+  "Berlin": "Berlin 男士皮鞋",
+  "JOSI": "JOSI 女鞋专营",
+  "FlyRun": "FlyRun 跑鞋专营店",
+  "VictorBoost": "VictorBoost 竞速跑鞋专营",
+  "MORE&STYLE": "MORE&STYLE 潮流穿搭店",
+  "倾色": "倾色美妆专营",
+  "净研": "倾色美妆专营",
+  "Razor": "Razor 个护小家电",
+  "豆光": "豆光全球咖啡馆",
+  "源味新疆": "源味新疆官方店",
+  "鲜果时光": "鲜果时光严选水果",
+  "PeakClimb": "PeakClimb 户外旗舰店",
+  "Trek": "PeakClimb 户外旗舰店",
+  "纽瑞兰": "纽瑞兰母婴",
+  "BlockJoy": "BlockJoy 益智玩具",
+  "MORI": "MORI 进口文具",
+  "Pelican": "Pelican 钢笔专营",
+  "心选": "心选礼盒专营店",
+  "贝亲心选": "心选礼盒专营店"
+};
+const SHOP_PROMOS = {
+  "极光科技官方旗舰店":      "关注立减 ¥10 · 店铺满 3000-200 / 满 5000-500 · 免息分期 3/6/12 期",
+  "白浪家电官方旗舰店":      "关注立减 ¥10 · 店铺满 2000-150 / 满 5000-400 · 免费送装 + 5 年延保",
+  "声海音频专卖店":          "关注立减 ¥5 · 店铺满 500-30 / 满 1000-80 · 店铺会员免费 9.5 折",
+  "盛意男装专营店":          "关注立减 ¥5 · 买 2 件 9 折 / 买 3 件 8 折 · 店铺满 500-50 / 满 1000-150",
+  "倾色美妆专营":            "关注立减 ¥5 · 满 199 送 5ml 小样 / 满 399 送 15ml 正装 · 店铺会员 9 折",
+  "豆光全球咖啡馆":          "关注立减 ¥3 · 店铺满 200-25 / 满 500-80",
+  "PeakClimb 户外旗舰店":    "关注立减 ¥10 · 店铺满 999-100 / 满 1999-250 · 店铺会员 ¥30/年享 88 折",
+  "心选礼盒专营店":          "关注立减 ¥5 · 满 599 享免费手写贺卡 · 店铺组合「礼盒+贺卡+鲜花」9 折"
+};
+function shopOf(brand) { return SHOP_BRAND_MAP[brand] || (brand + " 官方旗舰店"); }
+function shopPromoOf(shop) { return SHOP_PROMOS[shop] || "关注立减 ¥3 · 店铺满 200-15 / 满 500-50（默认配置）"; }
+
+/* ----------------- 88VIP 参与状态 ----------------- */
+/* 不参与 88VIP 的店铺（跨境店铺、特殊渠道店铺） */
+const VIP88_EXCLUDED_SHOPS = new Set([
+  "豆光全球咖啡馆"
+]);
+function isShopVip88(shop) { return !VIP88_EXCLUDED_SHOPS.has(shop); }
+function vip88Status(p) {
+  const shop = shopOf(p.brand);
+  if (!isShopVip88(shop)) return { kind: "shop-excluded", short: "店铺不参与 88VIP", long: "该店铺暂不参与 88VIP（跨境店铺受跨境政策限制）" };
+  if (p.vip88Excluded)    return { kind: "product-excluded", short: "本商品不参与 88VIP", long: "本商品因品牌方/进口政策限制不参与 88VIP 9.5 折" };
+  return { kind: "ok", short: "88VIP 9.5 折", long: "88VIP 用户额外享 9.5 折（与平台加补券二选一）" };
 }
+
+/* ----------------- 商品卡片 ----------------- */
+function discountText(p) { return ""; }
 
 function renderGrid() {
   let list = curCat === "all" ? PRODUCTS.slice() : PRODUCTS.filter(p => p.cat === curCat);
@@ -1407,16 +1635,11 @@ function renderGrid() {
     return;
   }
   $("grid").innerHTML = list.map(p => {
-    const priceHTML = p.minPrice === p.maxPrice
-      ? `<span class="now"><small>¥</small>${p.minPrice}</span>`
-      : `<span class="now"><small>¥</small>${p.minPrice}</span><span class="range">~¥${p.maxPrice}</span>`;
-    const oldHTML = p.original ? `<span class="old">¥${p.original}</span>` : "";
-    const discount = discountText(p);
+    const priceHTML = `<span class="now"><small>¥</small>${p.minPrice}</span>`;
     const hot = p.sales >= 10000 ? `<div class="badge-hot">🔥 热销</div>` : "";
     return `
     <div class="card" onclick="openDetail('${p.id}')">
       <div class="thumb">
-        ${discount ? `<div class="badge-discount">${discount}</div>` : ""}
         ${hot}
         ${p.emoji}
       </div>
@@ -1424,7 +1647,11 @@ function renderGrid() {
         <div class="pname">${p.name}</div>
         <div class="ptags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
         <div class="pmeta"><span class="star">★ ${p.rating}</span><span>月销 ${p.sales >= 10000 ? (p.sales/10000).toFixed(1)+'万' : p.sales}</span><span>${p.skuCount} SKU</span></div>
-        <div class="pprice">${priceHTML} ${oldHTML}</div>
+        <div class="pshop-row">
+          <span class="pshop">🏪 ${shopOf(p.brand)}</span>
+          ${(()=>{ const v = vip88Status(p); return `<span class="vip88 ${v.kind}">${v.kind === "ok" ? "👑 " : ""}${v.short}</span>`; })()}
+        </div>
+        <div class="pprice">${priceHTML}</div>
       </div>
     </div>`;
   }).join("");
@@ -1502,15 +1729,13 @@ function renderModal() {
 
   let priceHTML, stockHTML;
   if (sku && sku.stock > 0) {
-    const save = p.original && p.original > sku.price ? `<span class="save">省¥${p.original - sku.price}</span>` : "";
-    priceHTML = `<span class="big"><small>¥</small>${sku.price}</span>${p.original ? `<span class="original">¥${p.original}</span>` : ""}${save}`;
+    priceHTML = `<span class="big"><small>¥</small>${sku.price}</span>`;
     stockHTML = `<div class="stock"><span class="ok">✔ 现货 ${sku.stock} 件 · 48 小时内发货</span></div>`;
   } else if (sku && sku.stock === 0) {
-    priceHTML = `<span class="big"><small>¥</small>${sku.price}</span>${p.original ? `<span class="original">¥${p.original}</span>` : ""}`;
+    priceHTML = `<span class="big"><small>¥</small>${sku.price}</span>`;
     stockHTML = `<div class="stock"><span class="no">✘ 该规格暂时缺货，请选择其他规格</span></div>`;
   } else {
-    const min = p.minPrice, max = p.maxPrice;
-    priceHTML = `<span class="big"><small>¥</small>${min}${min!==max?' ~ '+max:''}</span>${p.original ? `<span class="original">¥${p.original}</span>` : ""}`;
+    priceHTML = `<span class="big"><small>¥</small>${p.minPrice}</span>`;
     const need = p.specs.filter((s,i)=>curSel[i]===null).map(s=>s.label).join("、");
     stockHTML = `<div class="stock"><span class="hint">请选择：${need}</span></div>`;
   }
@@ -1590,6 +1815,13 @@ function renderModal() {
       <div>
         <div class="m-name">${p.name}</div>
         <div class="m-brand">品牌：${p.brand} · 共 ${p.skuCount} 个 SKU 可选</div>
+        <div class="m-shop">
+          <div class="shop-line">
+            <span class="shop-name">🏪 店铺：${shopOf(p.brand)}</span>
+            ${(()=>{ const v = vip88Status(p); return `<span class="vip88 ${v.kind}" title="${v.long}">${v.kind === "ok" ? "👑 " : ""}${v.short}</span>`; })()}
+          </div>
+          <span class="shop-promo">${shopPromoOf(shopOf(p.brand))}</span>
+        </div>
         <div class="m-meta">
           <span class="rating">★ ${p.rating}</span>
           <span>月销 ${p.sales >= 10000 ? (p.sales/10000).toFixed(1)+'万' : p.sales}</span>

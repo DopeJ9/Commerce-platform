@@ -28,9 +28,6 @@
     display: inline-flex; align-items: center; gap: 4px;
     color: #fff; font-weight: 700;
   }
-  .platform-nav .pn-spacer { flex: 1; }
-  .platform-nav .switch-mall { display: inline-flex; gap: 10px; align-items: center; }
-  .platform-nav .switch-mall .lbl { color: rgba(255,255,255,.75); }
   /* 顶栏 */
   header {
     background: #fff; box-shadow: 0 1px 0 #ececf0;
@@ -144,6 +141,47 @@
   .pprice .now small { font-size: 12px; }
   .pprice .old { color: #b0b4bb; text-decoration: line-through; font-size: 12px; }
   .pprice .range { color: #8a9099; font-weight: 400; font-size: 12px; }
+
+  /* 店铺 chip（卡片用）*/
+  .pshop-row {
+    display: flex; align-items: center; gap: 6px;
+    margin: 4px 0 2px 0; min-width: 0;
+  }
+  .pshop {
+    font-size: 11.5px;
+    color: #0050b3;
+    background: #e6f7ff;
+    border: 1px solid #91d5ff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    flex: 1 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* 详情页店铺信息条 */
+  .m-shop {
+    display: block;
+    background: linear-gradient(135deg, #e6f7ff 0%, #f0fcff 100%);
+    border: 1px solid #91d5ff;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin: 6px 0 12px 0;
+    font-size: 12.5px;
+    color: #0050b3;
+    line-height: 1.6;
+  }
+  .m-shop .shop-line {
+    display: flex; align-items: center; gap: 8px;
+    flex-wrap: wrap; margin-bottom: 4px;
+  }
+  .m-shop .shop-name { font-weight: 600; color: #003a8c; }
+  .m-shop .shop-promo {
+    display: block; color: #595959; font-size: 12px;
+    padding-top: 4px; border-top: 1px dashed #91d5ff;
+  }
 
   /* 详情弹窗 */
   .mask {
@@ -382,12 +420,6 @@
       <a class="home-link" href="../index.html">⬅ 商城广场</a>
       <span style="opacity:.5">/</span>
       <span>海象优选 · 品质严选会员制</span>
-      <span class="pn-spacer"></span>
-      <span class="switch-mall">
-        <span class="lbl">同款比价 →</span>
-        <a href="yuegou.html">🛍️ 悦购商城</a>
-        <a href="shangou.html">⚡ 闪购天地</a>
-      </span>
     </div>
   </div>
 
@@ -456,108 +488,112 @@
         <div class="slogan">品质会员制超市 · 全球严选 · 保税仓直发</div>
       </div>
       <div class="rule-body">
+        <!-- 1️⃣ 店铺优惠 -->
         <div class="rule-section">
-          <h3><span class="ic">💰</span>满减优惠（多档阶梯，仅取最高档）</h3>
+          <h3><span class="ic">🏪</span>1. 店铺优惠（最先生效，作用于单店内商品）</h3>
+          <ul class="rule-list">
+            <li><b>店铺审核</b>：海象优选所有店铺均经过严选认证，按经营模式分为三类（商品详情页会显示店铺名 + 类型徽标）：
+              <ul style="margin-top:4px;">
+                <li><b>🏛️ 保税仓直营店</b>：海象自营，从国内保税仓直发。72 小时内出库；出现质量问题平台先行赔付。</li>
+                <li><b>⭐ 品牌官方旗舰店</b>：品牌方授权直营。提供原厂保修 + 防伪芯片 + 一物一码。</li>
+                <li><b>✈️ 海外直邮专营店</b>：从原产国海外仓直邮。3-15 个工作日清关 + 配送；提供海关清关单。</li>
+              </ul>
+            </li>
+            <li><b>通用店铺优惠形式</b>（不同店铺搭配不同，详情页店铺信息条会标注）：
+              <ul style="margin-top:4px;">
+                <li><b>① 关注礼</b>：关注该店铺立减 ¥10 ~ ¥100（同店每月限 1 次，下单时自动抵扣）</li>
+                <li><b>② 店铺满减</b>：店内商品累计满 X 减 Y（仅本店内累计触发，跨店不通用）</li>
+              </ul>
+            </li>
+            <li><b>三类店铺的差异化特色</b>：
+              <ul style="margin-top:4px;">
+                <li>🏛️ <b>保税仓直营店</b>：满减门槛较低 + 平台先行赔付 + 提供「假一赔十万」承诺</li>
+                <li>⭐ <b>品牌官方旗舰店</b>：店铺优惠由品牌方设定，常见免息分期 + 赠原厂周边；不与平台满减叠加的品牌（如奢侈品类）会明示</li>
+                <li>✈️ <b>海外直邮专营店</b>：常提供「关税补贴券」（满 ¥1000 抵 ¥80 关税）；因海关政策不支持平台满减</li>
+              </ul>
+            </li>
+            <li><b>互斥规则</b>：
+              <ul style="margin-top:4px;">
+                <li>「关注礼」可与店铺满减叠加（同店生效）</li>
+                <li>店铺满减不跨店：A 店满 1000 仅看 A 店内商品累计金额，与 B 店无关</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 2️⃣ 平台优惠 -->
+        <div class="rule-section">
+          <h3><span class="ic">💰</span>2. 平台优惠（跨店满减 + 严选保障）</h3>
+          <h4 style="margin:6px 0 8px 0;font-size:14px;">📊 跨店满减档位（多档取最高，不阶梯叠加）</h4>
           <div class="rule-grid">
             <div class="rule-card"><div class="rc-t">满 500 元</div><div class="rc-v">立减 50 元</div></div>
             <div class="rule-card"><div class="rc-t">满 1500 元</div><div class="rc-v">立减 200 元</div></div>
             <div class="rule-card"><div class="rc-t">满 3000 元</div><div class="rc-v">立减 500 元</div></div>
             <div class="rule-card"><div class="rc-t">满 6000 元</div><div class="rc-v">立减 1200 元</div></div>
-            <div class="rule-card"><div class="rc-t">海外直邮专享</div><div class="rc-v">满 800 减 100</div></div>
+            <div class="rule-card"><div class="rc-t">满 12000 元</div><div class="rc-v">立减 2800 元</div></div>
           </div>
           <ul class="rule-list" style="margin-top:10px;">
-            <li>满减按"订单实付前金额"计算，<b>仅取最高档</b>（即触发 6000-1200 后不再叠加 3000-500）</li>
-            <li>"海外直邮专享"满减只对保税仓商品生效，且 <b>可与普通满减叠加</b>（仅此一种叠加例外）</li>
-            <li>奢侈品（LV/Omega 等贴有"奢侈品溯源"标签）<b>不参与任何满减</b>，仅享 PLUS/黑卡折扣</li>
+            <li><b>触发金额</b> = 「订单内 <i>参与品类</i> 商品（在已扣店铺优惠后）合计金额」</li>
+            <li><b>取最高档</b>，不阶梯叠加（例：触发额 ¥7000 → 命中"满 6000 减 1200"，不再额外触发 3000/1500/500）</li>
+            <li><b style="color:#0050b3">不参与平台满减的品类</b>：
+              <ul style="margin-top:4px;">
+                <li>奢侈品类（Louis Vuitton / OMEGA / La Mer 等贴有"奢侈品溯源"标签的商品）</li>
+                <li>跨境直邮商品中的酒类（Château Lafite 等，受海关进口管制）</li>
+                <li>限量款 / 联名款（商品页明示"不参与平台满减"标签）</li>
+              </ul>
+            </li>
+            <li><b>计算示例</b>：购物车 = LV 包 ¥18999（不参与） + 西装 ¥899 + 衬衫 ¥299。
+              <ul style="margin-top:4px;">
+                <li>触发额 = 899 + 299 = ¥1198 → 命中"满 500 减 50"</li>
+                <li>订单合计 = 18999 + (1198 - 50) = ¥20147</li>
+              </ul>
+            </li>
+          </ul>
+
+          <h4 style="margin:14px 0 8px 0;font-size:14px;">🛡️ 严选品质保障（与商品价格无关，自动生效）</h4>
+          <ul class="rule-list">
+            <li><b>四重溯源</b>：① 海关清关单 ② 防伪芯片/一物一码 ③ 中检（CCIC）鉴定证书 ④ 品牌官方授权书</li>
+            <li><b>假一赔十万</b>：① 商品价 ≤ ¥10000 → 赔付 <b>10 倍商品价</b>（封顶 ¥10 万） ② 商品价 &gt; ¥10000 → 赔付 <b>¥10 万 + 退还商品价</b></li>
+            <li><b>30 天价保</b>：自营保税仓商品支持 30 天页面价保（不含奢侈品 / 海外直邮 / 限量款）</li>
+            <li><b>无理由退货</b>：保税仓商品 15 天 + 跨境直邮 30 天（详见各商品退货政策）</li>
           </ul>
         </div>
 
+        <!-- 3️⃣ 运费 -->
         <div class="rule-section">
-          <h3><span class="ic">⭐</span>三级会员体系（PLUS / 黑卡 / 银河子卡）</h3>
+          <h3><span class="ic">🚚</span>3. 运费 & 物流（按店铺类型分别计算）</h3>
           <ul class="rule-list">
-            <li><b>普通用户</b>：每月 1 张 50/500 优惠券；价保 30 天</li>
-            <li><b>海象 PLUS</b>（199 元/年）：永久 <b>95 折</b> + 每月 4 张大额券（100/800、200/1500） + 海象币 <b>1.5 倍</b>奖励 + 价保 60 天</li>
-            <li><b>海象黑卡</b>（999 元/年）：永久 <b>88 折</b> + 海关清关费全免 + 终身价保 + 上门验机 + 每月 2 次免费奢侈品鉴定</li>
-            <li><b>银河子卡</b>：黑卡可邀请 2 位家人共享权益，但子卡每月共享额度上限 <b>5000 元</b>，超出按普通用户计费</li>
-            <li>会员日（每月 9 日）：积分 3 倍 + 无门槛 100 元代金券（仅黑卡）</li>
+            <li><b>🏛️ 保税仓直营店</b>（顺丰直发）：
+              <ul style="margin-top:4px;">
+                <li>满 ¥199 包邮，未满收 <b>¥15/单</b></li>
+                <li>大件家电（≥ 30kg）：基础运费 ¥30 + 阶梯 30-60kg 加 ¥30 / 60-100kg 加 ¥80 / 100kg 以上加 ¥150</li>
+                <li>偏远地区（新疆 / 西藏 / 内蒙古 / 青海）：附加 +¥40/单</li>
+              </ul>
+            </li>
+            <li><b>⭐ 品牌官方旗舰店</b>（品牌方物流）：
+              <ul style="margin-top:4px;">
+                <li>满 ¥299 包邮，未满收 <b>¥18/单</b></li>
+                <li>奢侈品类：强制使用品牌方专员配送，<b>¥80/单</b>（含开箱视频 + 上门验货）</li>
+              </ul>
+            </li>
+            <li><b>✈️ 海外直邮专营店</b>（跨境物流）：
+              <ul style="margin-top:4px;">
+                <li>基础国际运费：<b>¥60/单</b>（按重量阶梯：&lt; 1kg ¥60 / 1-5kg ¥120 / &gt; 5kg ¥250）</li>
+                <li>关税：商品价 &lt; ¥1000 免税；¥1000-5000 收 50 元/单清关费；&gt; ¥5000 按海关公告税率（约 13%-50%）补缴行邮税</li>
+                <li>跨境冷链（红酒 / 牛肉 / 部分美妆）：固定 +¥30/单</li>
+                <li>新疆 / 西藏 部分跨境商品暂不支持配送</li>
+              </ul>
+            </li>
+            <li><b>保价服务</b>（跨店铺通用）：
+              <ul style="margin-top:4px;">
+                <li>商品单价 ≥ ¥2000 建议购买保价，费率 <b>1%</b>（封顶 ¥500/单）</li>
+                <li>奢侈品类（LV / OMEGA / La Mer）<b>强制保价</b>，费率 1%</li>
+                <li>丢损按"保价金额 × 实际损坏比例"全额理赔；运输事故 24h 内联系客服</li>
+              </ul>
+            </li>
           </ul>
         </div>
 
-        <div class="rule-section">
-          <h3><span class="ic">🪙</span>海象币 & 积分</h3>
-          <ul class="rule-list">
-            <li><b>海象币赚取</b>：1 元实付 = 0.05 海象币（PLUS 1.5 倍 / 黑卡 2 倍）；黑卡用户每月赠送 <b>200 海象币</b></li>
-            <li><b>海象币使用</b>：1 海象币 = 1 元抵扣，单笔订单抵扣上限 <b>20%</b></li>
-            <li><b>积分</b>：1 元实付 = 1 积分；<b>200 积分 = 1 元抵扣</b>（与海象币不同币种，不可混用）</li>
-            <li>海象币有效期 <b>1 年</b>，按 FIFO 先进先出过期</li>
-          </ul>
-        </div>
-
-        <div class="rule-section">
-          <h3><span class="ic">🛂</span>跨境清关费 & 行邮税</h3>
-          <ul class="rule-list">
-            <li><b>清关费</b>：商品价 &lt; 1000 元 <b>免清关费</b>；&gt; 1000 元收 50 元/单（PLUS 30 元，黑卡 0 元）</li>
-            <li><b>跨境冷链</b>：固定 +20 元（PLUS 5 折 = 10 元，黑卡免）</li>
-            <li><b>行邮税</b>：单笔订单超 5000 元需自行补缴（系统自动按海关公告税率计算，约 13%-50% 不等）</li>
-            <li>跨境商品退货需走"反向清关"流程，已抵扣的行邮税 <b>不予退回</b>（海关规定）</li>
-          </ul>
-        </div>
-
-        <div class="rule-section">
-          <h3><span class="ic">🔍</span>正品溯源 & 真伪辨别（核心特色）</h3>
-          <ul class="rule-list">
-            <li><b>四重溯源</b>：① 海关清关单 ② 防伪芯片/一物一码 ③ 中检 (CCIC) 鉴定证书 ④ 品牌官方授权书</li>
-            <li><b>奢侈品验真</b>（LV/Gucci/Prada）：每件含中检免费鉴定 + 2 次自费复检（每次 200 元）</li>
-            <li><b>名表验真</b>：万表 + 中检双签，附 COSC 天文台认证书</li>
-            <li><b>美妆验真</b>：保税仓批次条码可扫码验证（保税仓批号 → 海关报关单号 → 品牌出厂码 三码合一）</li>
-            <li><b>假一赔十万规则</b>：① 商品价 ≤ 10000 元 → 赔付 <b>10 倍商品价</b>（封顶 10 万）；② 商品价 &gt; 10000 元 → 赔付 <b>10 万 + 退还商品价</b></li>
-            <li>鉴定为假货的，鉴定费由商家承担；鉴定为真品的，复检费由用户承担</li>
-          </ul>
-        </div>
-
-        <div class="rule-section">
-          <h3><span class="ic">🛡️</span>价保规则（按会员等级分级）</h3>
-          <ul class="rule-list">
-            <li>普通用户 <b>30 天</b>价保 / PLUS <b>60 天</b>价保 / 黑卡 <b>终身价保</b>（仅自营保税仓）</li>
-            <li>价保差额 = 原页面定价 − 当前页面定价（不考虑会员折扣后实付价）</li>
-            <li><b>不参与价保</b>：奢侈品（LV/Omega）/ 限量款 / 海外直邮商品（汇率波动）</li>
-            <li>价保到账：原路退回，海象币部分退还到账户</li>
-          </ul>
-        </div>
-
-        <div class="rule-section">
-          <h3><span class="ic">↩️</span>退换货政策（行业最长 + 严苛配件清单）</h3>
-          <ul class="rule-list">
-            <li><b>普通商品</b>：15 天无理由（不影响二次销售）；额外 30 天质量问题包退</li>
-            <li><b>跨境直邮商品</b>：30 天无理由，但需走反向清关，扣除 <b>商品价 8% 海关重新申报费</b></li>
-            <li><b>奢侈品退货必检清单</b>（缺一不可，缺则按 <b>原价 30%</b> 扣除）：① 防伪芯片完整 ② 海关清关单原件 ③ 中检鉴定报告（如已使用） ④ 包装盒、防尘袋、所有附件</li>
-            <li><b>已激活电子产品</b>（手表/手机/相机）：扣 <b>商品价 15%</b> 折旧 + 数据清除费 50 元</li>
-            <li><b>大件家电</b>：上门取件 50 元/单 + 拆装费 100 元/单（黑卡用户全免）</li>
-            <li><b>不退类目</b>：拆封食品 / 已开封个人护理 / 海外直邮的酒类（清关后不可逆）</li>
-            <li><b>退款公式</b>：<code>退款 = 实付金额 − 反向清关费 − 折旧扣款 − 取件费 − 已使用海象币（按比例扣回）</code></li>
-            <li>退款到账：T+3 工作日；跨境商品因清关因素 T+7 至 T+15 工作日</li>
-          </ul>
-        </div>
-
-        <div class="rule-section">
-          <h3><span class="ic">🚚</span>运费 & 保险</h3>
-          <ul class="rule-list">
-            <li><b>普通快递</b>：满 199 免运费，未满 15 元/单（顺丰直发）</li>
-            <li><b>跨境冷链</b>：固定 +20 元（PLUS 半价，黑卡免）</li>
-            <li><b>保价服务</b>：奢侈品强制保价，费率 <b>1%</b>（封顶 500 元/单）</li>
-            <li><b>保险理赔</b>：丢损按"保价金额 × 实际损坏比例"全额理赔</li>
-            <li><b>偏远地区</b>：新疆/西藏部分跨境商品暂不支持配送</li>
-          </ul>
-        </div>
-
-        <div class="rule-section">
-          <h3><span class="ic">📦</span>发货 & 配送</h3>
-          <ul class="rule-list">
-            <li>国内现货：<b>72 小时内发货</b>（黑卡 24 小时优先），顺丰直发</li>
-            <li>跨境保税仓：<b>3-5 个工作日</b>完成清关 + 发货</li>
-            <li>大件家电支持送装一体上门 + 旧机回收（最高抵 200 元）</li>
-          </ul>
-        </div>
       </div>
     </div>
   </div>
@@ -1455,7 +1491,7 @@ const PRODUCT_DEFS = [
 /* 自动生成完整 SKU 矩阵
    ★ 海象品质溢价：所有非独有商品价格统一上浮 8%（保税仓 + 假一赔十万 成本）
    ★ 自动追加品质标签，让商品卡片体现海象专属保障                          */
-const HAIXIANG_TAGS = ["✓ 海关清关", "PLUS 95 折"];
+const HAIXIANG_TAGS = ["✓ 假一赔十万"];
 const PRODUCTS = PRODUCT_DEFS.map(p => {
   const exclusive = p.haixiangExclusive === true;
   const priceFn = exclusive
@@ -1517,12 +1553,68 @@ document.addEventListener("click", e => {
   }
 });
 
-/* ----------------- 商品卡片 ----------------- */
-function discountText(p) {
-  if (!p.original || p.original <= p.minPrice) return "";
-  const off = Math.round((1 - p.minPrice / p.original) * 10);
-  return `直降¥${p.original - p.minPrice}`;
+/* ----------------- 店铺映射（与平台规则面板"3 类店铺"对应） ----------------- */
+const OVERSEAS_DIRECT_BRANDS = new Set([
+  "Louis Vuitton", "OMEGA", "Château Lafite", "Casa Olearia", "Aussie Wagyu"
+]);
+const BONDED_WAREHOUSE_BRANDS = new Set([
+  "La Mer", "MORI", "Pelican", "豆光", "鲜果时光"
+]);
+function shopTypeOf(brand) {
+  if (OVERSEAS_DIRECT_BRANDS.has(brand)) return "✈️";
+  if (BONDED_WAREHOUSE_BRANDS.has(brand)) return "🏛️";
+  return "⭐";
 }
+const SHOP_NAME_MAP = {
+  "Louis Vuitton":     "Louis Vuitton 官方海外直邮店",
+  "OMEGA":             "OMEGA 欧米茄官方授权店",
+  "Château Lafite":    "拉菲庄园海外直邮店",
+  "Casa Olearia":      "Casa Olearia 意大利庄园直邮店",
+  "Aussie Wagyu":      "澳洲和牛海外直邮店",
+  "La Mer":            "La Mer 海蓝之谜保税仓直营",
+  "MORI":              "MORI 进口文具保税仓直营",
+  "Pelican":           "Pelican 钢笔保税仓直营",
+  "豆光":              "豆光全球咖啡保税仓直营",
+  "鲜果时光":          "鲜果时光进口水果保税仓直营",
+  "Dyson":             "Dyson 戴森中国官方旗舰店",
+  "智屏":              "白浪家电品牌官方旗舰店",
+  "盛意 × Berlin 联名": "盛意服饰品牌官方旗舰店",
+  "MORE&STYLE":        "MORE&STYLE 潮流穿搭旗舰店",
+  "贝亲心选":          "心选礼盒品牌官方旗舰店",
+  "心选":              "心选礼盒品牌官方旗舰店"
+};
+function shopOf(brand) {
+  if (SHOP_NAME_MAP[brand]) return SHOP_NAME_MAP[brand];
+  const t = shopTypeOf(brand);
+  if (t === "🏛️") return brand + " 保税仓直营";
+  if (t === "✈️") return brand + " 海外直邮店";
+  return brand + " 品牌官方旗舰店";
+}
+const SHOP_PROMOS = {
+  "Louis Vuitton 官方海外直邮店":         "✈️ 海外直邮 · 关注立减 ¥100 · 含海关清关单 + 中检鉴定证书 · 不参与平台满减",
+  "OMEGA 欧米茄官方授权店":               "⭐ 品牌授权 · 关注立减 ¥100 · 含 COSC 天文台认证 · 终身保修 · 不参与平台满减",
+  "拉菲庄园海外直邮店":                   "✈️ 海外直邮 · 关注立减 ¥30 · 跨境冷链 +¥30 · 不参与平台满减",
+  "Casa Olearia 意大利庄园直邮店":        "✈️ 海外直邮 · 关注立减 ¥20 · 庄园出厂直发 · 关税补贴券满 1000 抵 80",
+  "澳洲和牛海外直邮店":                   "✈️ 海外直邮 · 跨境冷链 +¥30 · 关注立减 ¥30 · 100% 全程冷链可追溯",
+  "La Mer 海蓝之谜保税仓直营":            "🏛️ 保税仓直营 · 关注立减 ¥50 · 店铺满 1500-100 / 满 3000-300 · 三码合一防伪",
+  "Dyson 戴森中国官方旗舰店":             "⭐ 品牌官方 · 关注立减 ¥50 · 店铺满 3000-200 / 满 5000-500 · 免息分期 6/12 期",
+  "极光科技 品牌官方旗舰店":              "⭐ 品牌官方 · 关注立减 ¥30 · 店铺满 5000-300 / 满 8000-600 · 免息分期 6/12 期",
+  "白浪家电品牌官方旗舰店":               "⭐ 品牌官方 · 关注立减 ¥30 · 店铺满 3000-200 / 满 6000-600 · 免费送装 + 5 年延保",
+  "盛意服饰品牌官方旗舰店":               "⭐ 品牌官方 · 关注立减 ¥10 · 店铺满 500-50 / 满 1000-150 · 店铺满 2000-400",
+  "MORI 进口文具保税仓直营":              "🏛️ 保税仓直营 · 关注立减 ¥10 · 店铺满 199-15 / 满 500-50",
+  "Pelican 钢笔保税仓直营":               "🏛️ 保税仓直营 · 关注立减 ¥10 · 店铺满 599-50 / 满 1299-150 · 终身免费抛光",
+  "豆光全球咖啡保税仓直营":               "🏛️ 保税仓直营 · 关注立减 ¥5 · 店铺满 200-25 / 满 500-80 · 进口生豆现烘",
+  "鲜果时光进口水果保税仓直营":           "🏛️ 保税仓直营 · 关注立减 ¥5 · 满 200 包邮升级 · 48h 鲜果到家"
+};
+function shopPromoOf(shop) {
+  if (SHOP_PROMOS[shop]) return SHOP_PROMOS[shop];
+  if (shop.includes("海外直邮"))   return "✈️ 海外直邮 · 关注立减 ¥30 · 海关清关单 + 跨境冷链按品类附加 · 不参与平台满减";
+  if (shop.includes("保税仓直营")) return "🏛️ 保税仓直营 · 关注立减 ¥10 · 店铺满 199-15 / 满 500-50 · 假一赔十万";
+  return "⭐ 品牌官方 · 关注立减 ¥20 · 店铺满 500-30 / 满 1500-100 · 原厂保修 + 防伪芯片";
+}
+
+/* ----------------- 商品卡片 ----------------- */
+function discountText(p) { return ""; }
 
 function renderGrid() {
   let list = curCat === "all" ? PRODUCTS.slice() : PRODUCTS.filter(p => p.cat === curCat);
@@ -1549,16 +1641,11 @@ function renderGrid() {
     return;
   }
   $("grid").innerHTML = list.map(p => {
-    const priceHTML = p.minPrice === p.maxPrice
-      ? `<span class="now"><small>¥</small>${p.minPrice}</span>`
-      : `<span class="now"><small>¥</small>${p.minPrice}</span><span class="range">~¥${p.maxPrice}</span>`;
-    const oldHTML = p.original ? `<span class="old">¥${p.original}</span>` : "";
-    const discount = discountText(p);
+    const priceHTML = `<span class="now"><small>¥</small>${p.minPrice}</span>`;
     const hot = p.sales >= 10000 ? `<div class="badge-hot">🔥 热销</div>` : "";
     return `
     <div class="card" onclick="openDetail('${p.id}')">
       <div class="thumb">
-        ${discount ? `<div class="badge-discount">${discount}</div>` : ""}
         ${hot}
         ${p.emoji}
       </div>
@@ -1566,7 +1653,10 @@ function renderGrid() {
         <div class="pname">${p.name}</div>
         <div class="ptags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
         <div class="pmeta"><span class="star">★ ${p.rating}</span><span>月销 ${p.sales >= 10000 ? (p.sales/10000).toFixed(1)+'万' : p.sales}</span><span>${p.skuCount} SKU</span></div>
-        <div class="pprice">${priceHTML} ${oldHTML}</div>
+        <div class="pshop-row">
+          <span class="pshop">${shopTypeOf(p.brand)} ${shopOf(p.brand)}</span>
+        </div>
+        <div class="pprice">${priceHTML}</div>
       </div>
     </div>`;
   }).join("");
@@ -1644,15 +1734,13 @@ function renderModal() {
 
   let priceHTML, stockHTML;
   if (sku && sku.stock > 0) {
-    const save = p.original && p.original > sku.price ? `<span class="save">省¥${p.original - sku.price}</span>` : "";
-    priceHTML = `<span class="big"><small>¥</small>${sku.price}</span>${p.original ? `<span class="original">¥${p.original}</span>` : ""}${save}`;
+    priceHTML = `<span class="big"><small>¥</small>${sku.price}</span>`;
     stockHTML = `<div class="stock"><span class="ok">✔ 现货 ${sku.stock} 件 · 48 小时内发货</span></div>`;
   } else if (sku && sku.stock === 0) {
-    priceHTML = `<span class="big"><small>¥</small>${sku.price}</span>${p.original ? `<span class="original">¥${p.original}</span>` : ""}`;
+    priceHTML = `<span class="big"><small>¥</small>${sku.price}</span>`;
     stockHTML = `<div class="stock"><span class="no">✘ 该规格暂时缺货，请选择其他规格</span></div>`;
   } else {
-    const min = p.minPrice, max = p.maxPrice;
-    priceHTML = `<span class="big"><small>¥</small>${min}${min!==max?' ~ '+max:''}</span>${p.original ? `<span class="original">¥${p.original}</span>` : ""}`;
+    priceHTML = `<span class="big"><small>¥</small>${p.minPrice}</span>`;
     const need = p.specs.filter((s,i)=>curSel[i]===null).map(s=>s.label).join("、");
     stockHTML = `<div class="stock"><span class="hint">请选择：${need}</span></div>`;
   }
@@ -1732,6 +1820,12 @@ function renderModal() {
       <div>
         <div class="m-name">${p.name}</div>
         <div class="m-brand">品牌：${p.brand} · 共 ${p.skuCount} 个 SKU 可选</div>
+        <div class="m-shop">
+          <div class="shop-line">
+            <span class="shop-name">${shopTypeOf(p.brand)} 店铺：${shopOf(p.brand)}</span>
+          </div>
+          <span class="shop-promo">${shopPromoOf(shopOf(p.brand))}</span>
+        </div>
         <div class="m-meta">
           <span class="rating">★ ${p.rating}</span>
           <span>月销 ${p.sales >= 10000 ? (p.sales/10000).toFixed(1)+'万' : p.sales}</span>

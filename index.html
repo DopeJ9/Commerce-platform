@@ -232,28 +232,15 @@
   .mall-hx .ribbon-tag { color: #93c5fd; background: rgba(58,170,255,.10); border: 1px solid rgba(58,170,255,.22); }
   .mall-sg .ribbon-tag { color: #f0abfc; background: rgba(236,72,153,.10); border: 1px solid rgba(236,72,153,.22); }
 
-  .mall .slogan { position: relative; font-size: 13px; color: var(--text-2); line-height: 1.65; }
-
-  .mall .key-rules {
-    position: relative; display: flex; gap: 8px; flex-wrap: wrap;
-    padding-top: 4px; border-top: 1px dashed var(--line);
-    padding-top: 14px;
+  .mall .slogan {
+    position: relative; font-size: 13px; color: var(--text-2); line-height: 1.65;
+    padding-bottom: 14px; border-bottom: 1px dashed var(--line);
   }
-  .key-rules .chip {
-    font-size: 11px; padding: 4px 10px; border-radius: 6px;
-    background: rgba(255,255,255,.04); color: var(--text-2);
-    border: 1px solid var(--line);
-  }
-  .mall-yg .key-rules .chip { color: #ffb597; border-color: rgba(255,107,77,.18); background: rgba(255,107,77,.06); }
-  .mall-hx .key-rules .chip { color: #93c5fd; border-color: rgba(58,170,255,.18); background: rgba(58,170,255,.06); }
-  .mall-sg .key-rules .chip { color: #f0abfc; border-color: rgba(236,72,153,.18); background: rgba(236,72,153,.06); }
 
   .mall .bottom {
-    position: relative; display: flex; align-items: center; justify-content: space-between;
+    position: relative; display: flex; align-items: center; justify-content: flex-end;
     padding-top: 4px;
   }
-  .mall .price-hint { font-size: 11px; color: var(--text-3); }
-  .mall .price-hint b { color: var(--text); font-size: 13px; font-weight: 700; margin-left: 4px; }
   .enter {
     display: inline-flex; align-items: center; gap: 6px;
     font-size: 12px; font-weight: 700; letter-spacing: .5px;
@@ -263,61 +250,6 @@
   .mall-hx .enter { background: linear-gradient(135deg,var(--hx-1),var(--hx-2)); box-shadow: 0 6px 18px -6px var(--hx-2); }
   .mall-sg .enter { background: linear-gradient(135deg,var(--sg-1),var(--sg-2)); box-shadow: 0 6px 18px -6px var(--sg-2); }
   .enter-arrow { transition: transform .25s ease; }
-
-  /* 比价表 */
-  .compare-card {
-    background: var(--card); border: 1px solid var(--line);
-    border-radius: 20px; overflow: hidden;
-  }
-  .table-scroll { overflow-x: auto; }
-  table.cmp { width: 100%; border-collapse: collapse; min-width: 720px; }
-  table.cmp th, table.cmp td {
-    padding: 16px 20px; text-align: center;
-    border-bottom: 1px solid var(--line); font-size: 14px;
-  }
-  table.cmp thead th {
-    font-weight: 600; font-size: 11px; letter-spacing: 1.5px;
-    color: var(--text-2); background: rgba(255,255,255,.02);
-    text-transform: uppercase;
-  }
-  table.cmp thead th.th-yg { color: #ff8d6d; }
-  table.cmp thead th.th-hx { color: #67b8ff; }
-  table.cmp thead th.th-sg { color: #f0abfc; }
-  table.cmp thead th .sub { display: block; font-size: 9px; opacity: .6; margin-top: 2px; letter-spacing: 1px; font-weight: 500; }
-  table.cmp tbody tr:hover { background: rgba(255,255,255,.02); }
-  table.cmp tbody tr:last-child td { border-bottom: none; }
-  table.cmp .product-cell {
-    text-align: left; display: flex; align-items: center; gap: 12px;
-  }
-  table.cmp .product-cell .emo {
-    font-size: 22px; width: 40px; height: 40px; border-radius: 11px;
-    background: rgba(255,255,255,.04); display: inline-flex;
-    align-items: center; justify-content: center;
-  }
-  table.cmp .product-cell .pname { font-weight: 600; color: var(--text); font-size: 13px; }
-  table.cmp .product-cell .pdesc { font-size: 10px; color: var(--text-3); margin-top: 2px; letter-spacing: .5px; }
-  table.cmp .price { font-weight: 700; font-size: 15px; color: var(--text); }
-  table.cmp .price.lowest { color: #4ade80; background: rgba(34,197,94,.06); }
-  table.cmp .price.highest { color: var(--text-3); text-decoration: line-through; }
-  table.cmp .price-tag {
-    display: inline-block; font-size: 9px; padding: 1px 6px;
-    border-radius: 4px; margin-left: 5px; font-weight: 700; letter-spacing: 1px;
-    background: rgba(34,197,94,.18); color: #4ade80; vertical-align: middle;
-  }
-  table.cmp .diff { font-weight: 700; color: #c084fc; }
-  .compare-foot {
-    padding: 14px 22px; display: flex; justify-content: space-between;
-    align-items: center; border-top: 1px solid var(--line); flex-wrap: wrap; gap: 12px;
-    background: rgba(255,255,255,.015);
-  }
-  .legend { display: flex; gap: 18px; font-size: 12px; color: var(--text-2); flex-wrap: wrap; }
-  .legend i {
-    display: inline-block; width: 10px; height: 10px; border-radius: 3px;
-    vertical-align: middle; margin-right: 6px;
-  }
-  .legend .lo i { background: #4ade80; }
-  .legend .hi i { background: var(--text-3); }
-  .compare-foot .note { font-size: 11px; color: var(--text-3); }
 
   /* Footer */
   footer.foot {
@@ -342,7 +274,6 @@
     <div class="nav-links">
       <a href="#persona">画像</a>
       <a href="#malls">商城</a>
-      <a href="#compare">比价</a>
     </div>
     <span class="badge-live">3 个平台</span>
   </div>
@@ -386,13 +317,7 @@
         <span class="ribbon-tag">★ 推荐</span>
       </div>
       <div class="slogan">国民购物 · 性价比之选 · 综合大牌全品类</div>
-      <div class="key-rules">
-        <span class="chip">满 99 包邮</span>
-        <span class="chip">7 天无理由</span>
-        <span class="chip">假一赔十</span>
-      </div>
       <div class="bottom">
-        <div class="price-hint">主推<b>极光 X9 ¥5999</b></div>
         <span class="enter">进入<span class="enter-arrow">→</span></span>
       </div>
     </a>
@@ -403,14 +328,8 @@
         <div><div class="ttl">海象优选</div><div class="en">HAIXIANG SELECT</div></div>
         <span class="ribbon-tag">💎 品质</span>
       </div>
-      <div class="slogan">全球严选 · 保税仓直发 · PLUS 会员制</div>
-      <div class="key-rules">
-        <span class="chip">满 199 免邮</span>
-        <span class="chip">15+30 天保障</span>
-        <span class="chip">假一赔十万</span>
-      </div>
+      <div class="slogan">全球严选 · 保税仓直发 · 高端品质生活</div>
       <div class="bottom">
-        <div class="price-hint">主推<b>波尔多红酒 ¥1299</b></div>
         <span class="enter">进入<span class="enter-arrow">→</span></span>
       </div>
     </a>
@@ -422,47 +341,10 @@
         <span class="ribbon-tag">🔥 限时</span>
       </div>
       <div class="slogan">限时秒杀 · 网红爆款 · 价格屠夫</div>
-      <div class="key-rules">
-        <span class="chip">满 69 包邮</span>
-        <span class="chip">仅 3 天退</span>
-        <span class="chip">9 折破价</span>
-      </div>
       <div class="bottom">
-        <div class="price-hint">主推<b>10 片面膜 ¥19</b></div>
         <span class="enter">进入<span class="enter-arrow">→</span></span>
       </div>
     </a>
-  </div>
-</section>
-
-<!-- 比价 -->
-<section class="section" id="compare">
-  <div class="section-head">
-    <h2>同款 · 一眼比价<span class="num-tag">6 件</span></h2>
-    <div class="desc">同一件商品三家都能买到，差价源自服务保障的差别</div>
-  </div>
-  <div class="compare-card">
-    <div class="table-scroll">
-      <table class="cmp">
-        <thead>
-          <tr>
-            <th style="text-align:left;padding-left:24px">商品</th>
-            <th class="th-yg">🛍️ 悦购<span class="sub">综合大牌</span></th>
-            <th class="th-hx">🌊 海象<span class="sub">PLUS 严选</span></th>
-            <th class="th-sg">⚡ 闪购<span class="sub">9 折秒杀</span></th>
-            <th>差价</th>
-          </tr>
-        </thead>
-        <tbody id="cmpBody"></tbody>
-      </table>
-    </div>
-    <div class="compare-foot">
-      <div class="legend">
-        <span class="lo"><i></i>最低价</span>
-        <span class="hi"><i></i>最高价</span>
-      </div>
-      <div class="note">* 同款指共享商品 ID · 三家平台价格自动联动</div>
-    </div>
   </div>
 </section>
 
@@ -476,43 +358,6 @@
     <code>malls/shangou.html</code>
   </div>
 </footer>
-
-<script>
-const COMPARE_ITEMS = [
-  { emo: "📱", name: "极光 X9 Pro Max 5G",       desc: "5G 旗舰智能手机",      base: 5999 },
-  { emo: "🎧", name: "声海 Pro2 真无线耳机",     desc: "50dB 主动降噪",        base: 799  },
-  { emo: "👟", name: "FlyRun 缓震运动跑鞋",      desc: "氮气中底 透气飞织",    base: 399  },
-  { emo: "👕", name: "新疆纯棉基础款 T 恤",      desc: "180g 长绒棉 10 色",    base: 79   },
-  { emo: "☕", name: "豆光 全球精品咖啡豆",      desc: "SOE 单品 当周烘焙",    base: 78   },
-  { emo: "🧱", name: "BlockJoy 益智拼装积木",    desc: "5 大主题 ABS 环保",    base: 99   },
-];
-const tbody = document.getElementById("cmpBody");
-COMPARE_ITEMS.forEach(item => {
-  const yg = item.base, hx = Math.round(item.base * 1.08), sg = Math.round(item.base * 0.91);
-  const arr = [yg, hx, sg];
-  const min = Math.min(...arr), max = Math.max(...arr);
-  const mark = (v) => {
-    if (v === min) return `<td class="price lowest">¥${v}<span class="price-tag">最低</span></td>`;
-    if (v === max) return `<td class="price highest">¥${v}</td>`;
-    return `<td class="price">¥${v}</td>`;
-  };
-  tbody.insertAdjacentHTML("beforeend", `
-    <tr>
-      <td>
-        <div class="product-cell">
-          <span class="emo">${item.emo}</span>
-          <div>
-            <div class="pname">${item.name}</div>
-            <div class="pdesc">${item.desc}</div>
-          </div>
-        </div>
-      </td>
-      ${mark(yg)}${mark(hx)}${mark(sg)}
-      <td class="diff">¥${max - min}</td>
-    </tr>
-  `);
-});
-</script>
 
 </body>
 </html>
